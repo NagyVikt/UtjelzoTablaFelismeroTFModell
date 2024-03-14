@@ -6,3 +6,7 @@ Az OCR algoritmus nem csupán a szövegelemzésre, hanem minták alapján tört�
 
 Input: egy útjelző tábla képe.
 Output: a hozzá tartozó megfelelő utasítás kiírása. 
+
+Step 1: Environment Setup
+
+pip install numpy matplotlib scikit-learn scikit-image opencv-python
