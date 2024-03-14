@@ -51,8 +51,6 @@ A projekt iteratív fejlesztése során a következő lépésekre van szükség:
 1. Környezet Beállítása
 Az általad megadott könyvtárak nagyon hasznosak lesznek a képfeldolgozás és a gépi tanulás területén, így az első lépésben telepítenünk kell ezeket. A numpy segít a tömbműveletekben, a matplotlib a vizualizációban, a scikit-learn a gépi tanulási modellekkel kapcsolatos munkában, a scikit-image a képfeldolgozásban, és az opencv-python (OpenCV) az egyik legnépszerűbb képfeldolgozó könyvtár, amelyet széles körben használnak OCR feladatokban is.
 
-pip install numpy matplotlib scikit-learn scikit-image opencv-python pytesseract
-
 2. OCR és Minta Felismerés
 Az OCR (Optikai Karakterfelismerés) technológia alkalmazásához a pytesseract könyvtárat is hozzáadtam, amely a Google Tesseract-OCR engine Python interfészét biztosítja. A Tesseract egyik legfejlettebb és legpontosabb ingyenes OCR motorja, amely több mint 100 nyelvet támogat.
 
