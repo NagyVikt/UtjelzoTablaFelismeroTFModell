@@ -1,0 +1,40 @@
+(venv) C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE>python main2.py
+2024-03-21 16:52:50.033713: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-03-21 16:52:50.935606: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-03-21 16:52:53.334613: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Learning rate:  0.001
+Epoch 1/10
+C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\trainers\data_adapters\py_dataset_adapter.py:120: UserWarning: Your `PyDataset` class should call `super().__init__(**kwargs)` in its constructor. `**kwargs` can include `workers`, `use_multiprocessing`, `max_queue_size`. Do not pass these arguments to `fit()`, as they will be ignored.
+  self._warn_if_super_not_called()
+5/5 ━━━━━━━━━━━━━━━━━━━━ 6s 711ms/step - accuracy: 0.0163 - loss: 6.6260 - val_accuracy: 0.0000e+00 - val_loss: 6.1826 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 2/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 634ms/step - accuracy: 0.0706 - loss: 6.4524 - val_accuracy: 0.0000e+00 - val_loss: 6.0537 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 3/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 649ms/step - accuracy: 0.0593 - loss: 6.3991 - val_accuracy: 0.0000e+00 - val_loss: 5.9559 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 4/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 622ms/step - accuracy: 0.0419 - loss: 6.2860 - val_accuracy: 0.0000e+00 - val_loss: 5.8500 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 5/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 615ms/step - accuracy: 0.0330 - loss: 6.1241 - val_accuracy: 0.0000e+00 - val_loss: 5.7724 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 6/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 619ms/step - accuracy: 0.0171 - loss: 6.0589 - val_accuracy: 0.0000e+00 - val_loss: 5.7073 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 7/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 625ms/step - accuracy: 0.0320 - loss: 6.0172 - val_accuracy: 0.0000e+00 - val_loss: 5.6560 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 8/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 621ms/step - accuracy: 0.0398 - loss: 5.9252 - val_accuracy: 0.0000e+00 - val_loss: 5.6202 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 9/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 625ms/step - accuracy: 0.0345 - loss: 5.9205 - val_accuracy: 0.0000e+00 - val_loss: 5.6418 - learning_rate: 0.0010
+Learning rate:  0.001
+Epoch 10/10
+5/5 ━━━━━━━━━━━━━━━━━━━━ 3s 620ms/step - accuracy: 0.0506 - loss: 5.8093 - val_accuracy: 0.0000e+00 - val_loss: 6.0194 - learning_rate: 0.0010
+2/2 ━━━━━━━━━━━━━━━━━━━━ 0s 151ms/step
+ÚTIRÁNY-ELŐJELZŐ TÁBLA: 40
+Total predictions: 40 and what this means? 

@@ -1,0 +1,27 @@
+
+The output you're seeing is the result of running your model through training and then making predictions on the test dataset. Here's a breakdown of what the messages and results mean:
+
+oneDNN Messages: The informational messages about oneDNN are telling you that TensorFlow is using oneDNN libraries to optimize certain operations for performance. oneDNN (previously known as MKL-DNN) is an open-source performance library for deep learning applications. The message about floating-point round-off errors is just a warning that numerical results might slightly differ due to the order of operations in these optimizations. In most cases, this won't significantly affect your model's performance.
+
+TensorFlow AVX2 FMA Message: This message is informing you that TensorFlow is optimized to use certain CPU instructions (AVX2, FMA) which can accelerate machine learning operations. However, if your CPU doesn't support these instructions, TensorFlow can still run but might be slower. To use these optimizations, you'd need a TensorFlow build that's specifically compiled for a CPU with these instructions.
+
+Training Progress: The output shows your model's training process for 10 epochs. For each epoch, it reports:
+
+The time it took to complete.
+The training accuracy and loss.
+The validation accuracy and loss.
+The learning rate for that epoch.
+Notably, your model's training accuracy is very low, and the validation accuracy remains at zero, which indicates that the model is not learning effectively from the training data.
+
+UserWarning: The warning about the PyDataset class is likely coming from an issue within TensorFlow's Keras code or your use of the data adapter. It's telling you that if you're using a custom dataset class, you should ensure it calls super().__init__(**kwargs). This could be due to using an older or a custom version of TensorFlow/Keras or an issue with the dataset adapter in the version you are using.
+
+Final Output: After training, the model is used to predict classes on the test set. The output shows that all 40 predictions made by the model are the same: "ÚTIRÁNY-ELŐJELZŐ TÁBLA". This suggests that the model is not able to differentiate between different classes and is likely predicting the majority class for all inputs, which is a sign of an ineffective model.
+
+Given the output, you should consider the following steps to improve your model:
+
+Verify your dataset to make sure it's well-prepared and balanced.
+Use more complex or different model architectures.
+Tune hyperparameters such as the learning rate.
+Apply more extensive data augmentation.
+Use dropout or other regularization techniques to combat overfitting.
+Ensure that the data fed into the model during training is shuffled to prevent the model from learning the order of the data.
