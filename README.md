@@ -24,23 +24,24 @@ A projekt függőségeinek elkülönítése érdekében ajánlott egy virtuális
 
 Virtuális környezet létrehozása:
 
-
+```bash
 python -m venv venv
+```
 Virtuális környezet aktiválása:
 
 Windows esetén:
-
+```bash
 .\venv\Scripts\activate
-
+```
 macOS és Linux esetén:
-
+```bash
 source venv/bin/activate
-
+```
 Függőségek telepítése a requirements.txt fájlból:
 
-
+```bash
 pip install -r requirements.txt
-
+```
 
 
 
@@ -48,18 +49,18 @@ pip install -r requirements.txt
 ### Telepítés
 
 1. Klónozd a repót:
-
+```bash
 git clone https://github.com/NagyVikt/OCRSZE.git
-
+```
 
 2. Telepítsd a függőségeket a fent megadott pip parancsokkal.
 
 ## Használat
 
 Helyezd az útjelző tábla képeit egy mappába, és futtasd a fő scriptet a következő parancs segítségével:
-
+```bash
 python main.py --images_path ./your_image_folder_path
-
+```
 A script kimenete tartalmazni fogja a felismert táblákat és azok szöveges kimenetét.
 
 ## Fejlesztés
