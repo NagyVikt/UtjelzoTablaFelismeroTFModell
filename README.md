@@ -16,7 +16,7 @@ Ez a projekt egy olyan OCR (Optikai Karakterfelismerő) algoritmus kifejlesztés
 ### Előfeltételek
 
 A projekt futtatásához szükséged lesz Pythonra, virtuális könyvtárra és néhány külső fájlra. 
-Kövesd a kötvetkező lépéseket 
+Kövesd a következő lépéseket 
 
 
 ### Telepítés
