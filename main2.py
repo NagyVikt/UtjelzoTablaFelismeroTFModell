@@ -85,7 +85,7 @@ def main(image_directory, json_file_path):
         elif epoch > 30:
             lr *= 0.5e-3
         elif epoch > 40:
-            lr*= 1e-4
+            lr *= 1e-4
         print('Learning rate: ', lr)
         return lr
     lr_scheduler = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
@@ -100,7 +100,7 @@ def main(image_directory, json_file_path):
     )
 
     # Save the model in the TensorFlow's default SavedModel format
-    model.save('traffic_sign_model')
+    model.save('traffic_sign_model.keras')
 
     predictions = model.predict(X_test)
     predicted_classes = np.argmax(predictions, axis=1)
@@ -114,7 +114,7 @@ def main(image_directory, json_file_path):
         print(f'{label}: {count}')
     print(f'Total predictions: {len(predicted_labels)}')
 
-if __name__== "main":
+if __name__ == "__main__":
     image_directory = 'utjelzotablak'
     json_file_path = 'descriptions.json'
     main(image_directory, json_file_path)
