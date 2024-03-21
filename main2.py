@@ -119,3 +119,4 @@ if __name__ == "__main__":
     json_file_path = 'descriptions.json'
     main(image_directory, json_file_path)
 
+
