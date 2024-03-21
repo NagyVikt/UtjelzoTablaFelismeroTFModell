@@ -1,52 +1,68 @@
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
+import tensorflow as tf
+from tensorflow.keras import layers, models
 import numpy as np
-import cv2
+from tensorflow.keras.preprocessing.image import img_to_array, load_img
 
-def preprocess_for_ocr(image_path):
-    # Load the image
-    image = cv2.imread(image_path)
-    
-    # Convert to grayscale and threshold
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
-    
-    # Find contours (this helps in segmenting the text into characters)
-    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
-    # Sort contours from left to right (simple heuristic)
-    contours = sorted(contours, key=lambda ctr: cv2.boundingRect(ctr)[0])
-    
-    return contours, thresh
+import os
+import json
 
-def recognize_characters(image_path, model):
-    contours, thresh = preprocess_for_ocr(image_path)
+# Define the directory where your images are stored
+image_directory = 'path_to_your_utjelzotablak_folder'
+
+# Load the JSON file with your descriptions
+with open('path_to_your_json_file', 'r') as json_file:
+    image_labels = json.load(json_file)
+
+# Preprocess images
+def preprocess_images(image_directory, image_labels):
+    image_data = []
+    labels = []
     
-    for contour in contours:
-        # Get bounding box for each contour
-        x, y, w, h = cv2.boundingRect(contour)
+    for file_name, label in image_labels.items():
+        image_path = os.path.join(image_directory, file_name)
+        image = load_img(image_path)
+        image = img_to_array(image.resize((32, 32)))  # Resize to the input shape expected by the CNN
+        image /= 255.0  # Normalize pixel values
         
-        # Extract the character using the bounding box
-        char_image = thresh[y:y+h, x:x+w]
-        
-        # Preprocess the character image as done for training data, then predict
-        char_features = preprocess_and_flatten(char_image)  # You need to implement this function
-        prediction = model.predict([char_features])
-        print(f"Predicted character: {prediction}")
+        image_data.append(image)
+        labels.append(label)  # You might want to convert these labels to a numerical format
+    
+    return np.array(image_data), np.array(labels)
 
+# Run the preprocessing function
+X, y = preprocess_images(image_directory, image_labels)
 
+# Load and preprocess data
+# X_train, X_test, y_train, y_test = load_your_data()
 
-# Example data: X is your dataset of flattened images, y is the labels
-X = np.array([your_flattened_images])
-y = np.array([your_labels])
+# Build a CNN model
+model = models.Sequential()
 
-# Split data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(number_of_sign_classes, activation='softmax'))
 
-# Initialize and train the K-Nearest Neighbors classifier
-knn = KNeighborsClassifier(n_neighbors=3)
-knn.fit(X_train, y_train)
+# Compile the model
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
 
-# Test the classifier
-accuracy = knn.score(X_test, y_test)
-print(f"Accuracy: {accuracy}")
+# Train the model
+history = model.fit(X_train, y_train, epochs=10, 
+                    validation_data=(X_test, y_test))
+
+# Save the model
+model.save('traffic_sign_model.h5')
+
+# Predict with the model
+predictions = model.predict(X_test)
+predicted_signs = np.argmax(predictions, axis=1)
+
+# Infer meaning (this is a simple mapping, in practice you'd have a lookup)
+sign_meanings = {0: 'Stop', 1: 'Yield', ...} # Replace with actual mappings
+predicted_meanings = [sign_meanings[pred] for pred in predicted_signs]
