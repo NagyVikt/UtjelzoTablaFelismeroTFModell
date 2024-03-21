@@ -19,6 +19,16 @@ A projekt futtatásához szükséged lesz Pythonra, virtuális könyvtárra és 
 Kövesd a kötvetkező lépéseket 
 
 
+### Telepítés
+
+1. Klónozd a repót:
+```bash
+git clone https://github.com/NagyVikt/OCRSZE.git
+```
+
+2. Telepítsd a függőségeket a lejebb megadott pip parancsokkal.
+
+
 Virtuális Környezet Létrehozása
 A projekt függőségeinek elkülönítése érdekében ajánlott egy virtuális környezet használata. Hozd létre és aktiváld a virtuális környezetet a következő parancsokkal:
 
@@ -42,18 +52,6 @@ Függőségek telepítése a requirements.txt fájlból:
 ```bash
 pip install -r requirements.txt
 ```
-
-
-
-
-### Telepítés
-
-1. Klónozd a repót:
-```bash
-git clone https://github.com/NagyVikt/OCRSZE.git
-```
-
-2. Telepítsd a függőségeket a fent megadott pip parancsokkal.
 
 ## Használat
 
