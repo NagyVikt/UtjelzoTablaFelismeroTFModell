@@ -15,9 +15,34 @@ Ez a projekt egy olyan OCR (Optikai Karakterfelismerő) algoritmus kifejlesztés
 
 ### Előfeltételek
 
-A projekt futtatásához szükséged lesz Pythonra és néhány külső könyvtárra. Telepítsd ezeket a következő parancsokkal:
+A projekt futtatásához szükséged lesz Pythonra, virtuális könyvtárra és néhány külső fájlra. 
+Kövesd a kötvetkező lépéseket 
 
-pip install numpy matplotlib scikit-learn scikit-image opencv-python pytesseract
+
+Virtuális Környezet Létrehozása
+A projekt függőségeinek elkülönítése érdekében ajánlott egy virtuális környezet használata. Hozd létre és aktiváld a virtuális környezetet a következő parancsokkal:
+
+Virtuális környezet létrehozása:
+
+
+python -m venv venv
+Virtuális környezet aktiválása:
+
+Windows esetén:
+
+.\venv\Scripts\activate
+
+macOS és Linux esetén:
+
+source venv/bin/activate
+
+Függőségek telepítése a requirements.txt fájlból:
+
+
+pip install -r requirements.txt
+
+
+
 
 
 ### Telepítés
