@@ -110,3 +110,5 @@ Ez a projekt [MIT licenc](LICENSE.txt) alatt áll.
 
 https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign?resource=download
 https://www.analyticsvidhya.com/blog/2021/12/traffic-signs-recognition-using-cnn-and-keras-in-python/
+
+set TF_ENABLE_ONEDNN_OPTS=0
