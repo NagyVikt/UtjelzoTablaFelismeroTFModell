@@ -1,4 +1,4 @@
-# Útjelző Táblák Felismerése OCR Technológiával
+# Útjelző Táblák Felismerése Trensflow és OCR Technológiával
 
 ## Projekt Leírás
 
@@ -108,3 +108,5 @@ Ez a projekt [MIT licenc](LICENSE.txt) alatt áll.
 - [UJjelző tablak kepei](https://www.szuperjogsi.hu/)
 
 
+https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign?resource=download
+https://www.analyticsvidhya.com/blog/2021/12/traffic-signs-recognition-using-cnn-and-keras-in-python/
