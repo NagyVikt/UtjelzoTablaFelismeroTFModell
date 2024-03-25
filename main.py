@@ -1,72 +1,107 @@
-import tensorflow as tf
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import numpy as np
+import pandas as pd
 import os
-import json
+from PIL import Image
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
+import matplotlib.pyplot as plt
 
-def load_image_labels(json_file_path):
-    with open(json_file_path, 'r') as json_file:
-        return json.load(json_file)
-
-def create_label_mapping(labels):
-    unique_labels = sorted(set(labels.values()))
-    label_to_number = {label: i for i, label in enumerate(unique_labels)}
-    return label_to_number, len(unique_labels)
-
-def preprocess_images(image_directory, image_labels, label_to_number):
-    image_data = []
+def load_training_data(image_directory, num_classes=43):
+    data = []
     labels = []
-    for file_name, label in image_labels.items():
-        image_path = os.path.join(image_directory, file_name)
-        image = load_img(image_path, target_size=(32, 32))  # Direct resize
-        image = img_to_array(image) / 255.0  # Normalize pixel values
-        
-        image_data.append(image)
-        labels.append(label_to_number[label])  # Convert label to numerical format
-    
-    return np.array(image_data), np.array(labels)
+    for i in range(num_classes):
+        path = os.path.join(image_directory, str(i))
+        images = os.listdir(path)
+        for img in images:
+            try:
+                img_path = os.path.join(path, img)
+                image = Image.open(img_path)
+                image = image.resize((30,30))
+                image = np.array(image)
+                data.append(image)
+                labels.append(i)
+            except:
+                print(f"Error loading image: {img_path}")
+    data = np.array(data)
+    labels = np.array(labels)
+    return data, labels
 
-def define_compile_model(number_of_classes):
-    model = tf.keras.models.Sequential([
-        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
-        tf.keras.layers.MaxPooling2D((2, 2)),
-        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
-        tf.keras.layers.MaxPooling2D((2, 2)),
-        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
-        tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dense(number_of_classes, activation='softmax')
+def load_test_data(csv_path):
+    test_df = pd.read_csv(csv_path)
+    data = []
+    labels = test_df["ClassId"].values
+    for img_path in test_df["Path"].values:
+        image = Image.open(img_path)
+        image = image.resize((30,30))
+        data.append(np.array(image))
+    data = np.array(data)
+    return data, labels
+
+def build_model(input_shape, num_classes):
+    model = Sequential([
+        Conv2D(32, (5, 5), activation='relu', input_shape=input_shape),
+        Conv2D(32, (5, 5), activation='relu'),
+        MaxPool2D(pool_size=(2, 2)),
+        Dropout(0.25),
+        Conv2D(64, (3, 3), activation='relu'),
+        Conv2D(64, (3, 3), activation='relu'),
+        MaxPool2D(pool_size=(2, 2)),
+        Dropout(0.25),
+        Flatten(),
+        Dense(256, activation='relu'),
+        Dropout(0.5),
+        Dense(num_classes, activation='softmax')
     ])
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
-def main(image_directory, json_file_path):
-    image_labels = load_image_labels(json_file_path)
-    label_to_number, number_of_classes = create_label_mapping(image_labels)
+def main():
+    # Load training data
+    image_directory = 'Train'
+    data, labels = load_training_data(image_directory)
     
-    X, y = preprocess_images(image_directory, image_labels, label_to_number)
-    y = to_categorical(y, num_classes=number_of_classes)
-    
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    model = define_compile_model(number_of_classes)
-    
-    history = model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
-    
-    model.save('traffic_sign_model.h5')
-    
-    predictions = model.predict(X_test)
-    predicted_classes = np.argmax(predictions, axis=1)
-    
-    number_to_label = {i: label for label, i in label_to_number.items()}
-    predicted_labels = [number_to_label[pred] for pred in predicted_classes]
+    # Splitting the dataset
+    X_train, X_val, y_train, y_val = train_test_split(data, labels, test_size=0.2, random_state=42)
+    y_train = to_categorical(y_train, 43)
+    y_val = to_categorical(y_val, 43)
 
-    # Consider printing some results or evaluations here
-    print(predicted_labels)
+    # Building and training the model
+    model = build_model(X_train.shape[1:], 43)
+    history = model.fit(X_train, y_train, batch_size=32, epochs=15, validation_data=(X_val, y_val))
+
+    # Save the model
+    model.save("traffic_sings_v1.keras")
+
+    # Load test data
+    csv_path = 'Train.csv'
+    X_test, y_test_labels = load_test_data(csv_path)
+    y_test = to_categorical(y_test_labels, 43)
+
+    # Evaluate on test data
+    test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)
+    print(f"Test accuracy: {test_acc}, Test loss: {test_loss}")
+
+    # Plotting training results
+    plt.figure(0)
+    plt.plot(history.history['accuracy'], label='training accuracy')
+    plt.plot(history.history['val_accuracy'], label='val accuracy')
+    plt.title('Accuracy')
+    plt.xlabel('epochs')
+    plt.ylabel('accuracy')
+    plt.legend()
+    plt.show()
+
+    plt.figure(1)
+    plt.plot(history.history['loss'], label='training loss')
+    plt.plot(history.history['val_loss'], label='val loss')
+    plt.title('Loss')
+    plt.xlabel('epochs')
+    plt.ylabel('loss')
+    plt.legend()
+    plt.show()
+
 
 if __name__ == "__main__":
-    image_directory = 'utjelzotablak'
-    json_file_path = 'descriptions.json'
-    main(image_directory, json_file_path)
+    main()
