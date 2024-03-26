@@ -1,40 +1,58 @@
-Útjelző Táblák Felismerése TensorFlow és OCR Technológiával
-Projekt Leírás
+
+
+# Útjelző Táblák Felismerése TensorFlow és OCR Technológiával
+
+## Projekt Leírás
+
 Ez a projekt egy olyan OCR (Optikai Karakterfelismerő) algoritmus kifejlesztésére irányul, amely képes az útjelző táblák felismerésére és a rajtuk szereplő szöveges információk digitalizálására. Az algoritmus a modern képfeldolgozási technikákat és gépi tanulási modelleket, mint például a TensorFlow-t alkalmazva elemzi a közlekedési jelzéseket, azonosítja a szimbólumokat és a szöveges utasításokat, támogatva ezzel a vezetők tájékozódását és döntéshozatalát.
 
 E projekt különlegessége, hogy a TensorFlow segítségével létrehozott modellt képek alapján tréningeljük, amelyek az útjelző táblákat ábrázolják. A projekt célja egy olyan GUI (grafikus felhasználói interfész) megalkotása, amely képes felismerni és azonosítani a beadott útjelző táblákat a feldolgozott 200 különböző típus közül.
 
-Főbb Jellemzők
-Képfeldolgozás és gépi tanulás alapú szövegfelismerés
-TensorFlow segítségével tréningelt modell alkalmazása
-GUI-n keresztüli interaktív tábla felismerés
-Támogatás többféle útjelző tábla azonosítására
-Pontos és megbízható szöveges és vizuális kimenet generálása
-Kezdő lépések
-Előfeltételek
+### Főbb Jellemzők
+
+- Képfeldolgozás és gépi tanulás alapú szövegfelismerés
+- TensorFlow segítségével tréningelt modell alkalmazása
+- GUI-n keresztüli interaktív tábla felismerés
+- Támogatás többféle útjelző tábla azonosítására
+- Pontos és megbízható szöveges és vizuális kimenet generálása
+
+## Kezdő lépések
+
+### Előfeltételek
+
 A projekt futtatásához szükséged lesz Pythonra, TensorFlow-ra, egy virtuális könyvtárra és néhány külső fájlra. A pontos előfeltételeket és a telepítési útmutatót az alábbiakban találod.
 
-Telepítés
+### Telepítés
+
 [Telepítési lépések ismertetése, beleértve a TensorFlow és más függőségek telepítését.]
 
-Használat
+## Használat
+
 [Útmutató a GUI használatához, beleértve, hogy hogyan kell betölteni a képeket és hogyan történik az útjelző táblák felismerése.]
 
-Fejlesztés
+## Fejlesztés
+
 [Leírás a projekt iteratív fejlesztési lépéseiről, beleértve a képek előfeldolgozását, a modell tréningelését és finomhangolását, valamint a GUI fejlesztését.]
 
-Főbb lépések
+## Főbb lépések
+
 [A projekt főbb lépéseinek részletes ismertetése, többek között a TensorFlow modell építése, tréningelése és tesztelése, valamint a GUI integrációja.]
 
-Közreműködés
+## Közreműködés
+
 Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal vagy hibajelentéssel, vagy küldj be egy pull requestet a változtatásokkal.
 
-Licenc
-Ez a projekt MIT licenc alatt áll.
+## Licenc
 
-Szerző
-Projekt készítője: Nagy Viktor
+Ez a projekt [MIT licenc](LICENSE.txt) alatt áll.
 
+## Szerző
+
+- Projekt készítője: Nagy Viktor
+
+## Referenciák
+
+- [Pytesseract GitHub oldala](https://github.com/madm
 
 Referenciák
 
