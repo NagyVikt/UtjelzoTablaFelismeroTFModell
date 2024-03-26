@@ -1,114 +1,62 @@
-# Útjelző Táblák Felismerése Trensflow és OCR Technológiával
+Útjelző Táblák Felismerése TensorFlow és OCR Technológiával
+Projekt Leírás
+Ez a projekt egy olyan OCR (Optikai Karakterfelismerő) algoritmus kifejlesztésére irányul, amely képes az útjelző táblák felismerésére és a rajtuk szereplő szöveges információk digitalizálására. Az algoritmus a modern képfeldolgozási technikákat és gépi tanulási modelleket, mint például a TensorFlow-t alkalmazva elemzi a közlekedési jelzéseket, azonosítja a szimbólumokat és a szöveges utasításokat, támogatva ezzel a vezetők tájékozódását és döntéshozatalát.
 
-## Projekt Leírás
+E projekt különlegessége, hogy a TensorFlow segítségével létrehozott modellt képek alapján tréningeljük, amelyek az útjelző táblákat ábrázolják. A projekt célja egy olyan GUI (grafikus felhasználói interfész) megalkotása, amely képes felismerni és azonosítani a beadott útjelző táblákat a feldolgozott 200 különböző típus közül.
 
-Ez a projekt egy olyan OCR (Optikai Karakterfelismerő) algoritmus kifejlesztésére irányul, amely képes az útjelző táblák felismerésére és a rajtuk szereplő szöveges információk digitalizálására. Az algoritmus a modern képfeldolgozási technikákat alkalmazva elemzi a közlekedési jelzéseket, azonosítja a szimbólumokat és a szöveges utasításokat, támogatva ezzel a vezetők tájékozódását és döntéshozatalát.
+Főbb Jellemzők
+Képfeldolgozás és gépi tanulás alapú szövegfelismerés
+TensorFlow segítségével tréningelt modell alkalmazása
+GUI-n keresztüli interaktív tábla felismerés
+Támogatás többféle útjelző tábla azonosítására
+Pontos és megbízható szöveges és vizuális kimenet generálása
+Kezdő lépések
+Előfeltételek
+A projekt futtatásához szükséged lesz Pythonra, TensorFlow-ra, egy virtuális könyvtárra és néhány külső fájlra. A pontos előfeltételeket és a telepítési útmutatót az alábbiakban találod.
 
-### Főbb Jellemzők
+Telepítés
+[Telepítési lépések ismertetése, beleértve a TensorFlow és más függőségek telepítését.]
 
-- Képfeldolgozás alapú szövegfelismerés
-- Minták és szimbólumok felismerése (pl. STOP tábla)
-- Támogatás többféle útjelző tábla azonosítására
-- Pontos és megbízható szöveges kimenet generálása
+Használat
+[Útmutató a GUI használatához, beleértve, hogy hogyan kell betölteni a képeket és hogyan történik az útjelző táblák felismerése.]
 
-## Kezdő lépések
+Fejlesztés
+[Leírás a projekt iteratív fejlesztési lépéseiről, beleértve a képek előfeldolgozását, a modell tréningelését és finomhangolását, valamint a GUI fejlesztését.]
 
-### Előfeltételek
+Főbb lépések
+[A projekt főbb lépéseinek részletes ismertetése, többek között a TensorFlow modell építése, tréningelése és tesztelése, valamint a GUI integrációja.]
 
-A projekt futtatásához szükséged lesz Pythonra, virtuális könyvtárra és néhány külső fájlra. 
-Kövesd a következő lépéseket 
-
-
-### Telepítés
-
-1. Klónozd a repót:
-```bash
-git clone https://github.com/NagyVikt/OCRSZE.git
-```
-
-2. Telepítsd a függőségeket a lejebb megadott pip parancsokkal.
-
-
-Virtuális Környezet Létrehozása
-A projekt függőségeinek elkülönítése érdekében ajánlott egy virtuális környezet használata. Hozd létre és aktiváld a virtuális környezetet a következő parancsokkal:
-
-Virtuális környezet létrehozása:
-
-```bash
-python -m venv venv
-```
-Virtuális környezet aktiválása:
-
-Windows esetén:
-```bash
-.\venv\Scripts\activate
-```
-macOS és Linux esetén:
-```bash
-source venv/bin/activate
-```
-Függőségek telepítése a requirements.txt fájlból:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Használat
-
-Helyezd az útjelző tábla képeit egy mappába, és futtasd a fő scriptet a következő parancs segítségével:
-```bash
-python main.py --images_path ./your_image_folder_path
-```
-A script kimenete tartalmazni fogja a felismert táblákat és azok szöveges kimenetét.
-
-## Fejlesztés
-
-A projekt iteratív fejlesztése során a következő lépésekre van szükség:
-
-1. Képek előfeldolgozása a jobb felismerés érdekében.
-2. Minta felismerés és karakterfelismerés finomhangolása.
-3. Tesztelés különböző környezeti feltételek mellett.
-4. Teljesítmény javítása és optimalizálás.
-
-## Főbb lépesek
-
-1. Környezet Beállítása
-Az általad megadott könyvtárak nagyon hasznosak lesznek a képfeldolgozás és a gépi tanulás területén, így az első lépésben telepítenünk kell ezeket. A numpy segít a tömbműveletekben, a matplotlib a vizualizációban, a scikit-learn a gépi tanulási modellekkel kapcsolatos munkában, a scikit-image a képfeldolgozásban, és az opencv-python (OpenCV) az egyik legnépszerűbb képfeldolgozó könyvtár, amelyet széles körben használnak OCR feladatokban is.
-
-2. OCR és Minta Felismerés
-Az OCR (Optikai Karakterfelismerés) technológia alkalmazásához a pytesseract könyvtárat is hozzáadtam, amely a Google Tesseract-OCR engine Python interfészét biztosítja. A Tesseract egyik legfejlettebb és legpontosabb ingyenes OCR motorja, amely több mint 100 nyelvet támogat.
-
-3. Prototípus Fejlesztése
-Kép előfeldolgozása: Az OCR pontosságának növelése érdekében először elő kell dolgozni a képeket. Ez magában foglalhat zajcsökkentést, szín- vagy fényerő normalizálást, élek kiemelését, stb.
-Minta felismerés: Az útjelző táblákon lévő szimbólumok és minták felismerése fontos. Az OpenCV könyvtár funkcióit, mint a kontúrkeresés és a formafelismerés, használhatjuk a jellegzetes minták, pl. a STOP tábla nyolcszögletű formájának azonosítására.
-Karakterfelismerés: A pytesseract használatával olvasd be a szöveges információt a táblákról. A karakterfelismerési folyamat finomhangolása érdekében használj speciális konfigurációs paramétereket, amelyek megkönnyítik az egyedi formátumú vagy stílusú szövegek felismerését.
-Szöveg és minta összekapcsolása: Az olvasott szöveget és felismert mintákat összekapcsolva hozd létre a végleges outputot, ami a tábla által közvetített utasítás szöveges formában történő megjelenítése.
-
-4. Tesztelés és Optimalizálás
-Teszteld az algoritmust különböző típusú útjelző táblákkal, fényviszonyokkal és szögekkel. Gyűjts statisztikákat a pontosságról és a hibákról, és finomítsd az algoritmust a gyűjtött adatok alapján.
-Optimalizáld a kód futási idejét és a felismerés pontosságát. Kísérletezz különböző előfeldolgozási technikákkal és paraméterbeállításokkal.
-
-
-## Közreműködés
-
+Közreműködés
 Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal vagy hibajelentéssel, vagy küldj be egy pull requestet a változtatásokkal.
 
-## Licenc
+Licenc
+Ez a projekt MIT licenc alatt áll.
 
-Ez a projekt [MIT licenc](LICENSE.txt) alatt áll.
+Szerző
+Projekt készítője: Nagy Viktor
 
-## Szerző
-- Projekt készítője: Nagy Viktor
 
-## Referenciák
+Referenciák
 
-- [OpenCV dokumentáció](https://docs.opencv.org/master/)
-- [Pytesseract GitHub oldala](https://github.com/madmaze/pytesseract)
+- [TensorFlow hivatalos weboldala](https://www.tensorflow.org/)
 - [Scikit-image dokumentáció](https://scikit-image.org/docs/dev/index.html)
-- [UJjelző tablak kepei](https://www.szuperjogsi.hu/)
+- [OpenCV dokumentáció](https://opencv.org/)
+- [UJjelző tablák képei](https://www.szuperjogsi.hu/)
+- [GTSRB (German Traffic Sign Recognition Benchmark) dataset a Kaggle-on](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign?resource=download)
+- [Traffic Signs Recognition Using CNN and Keras](https://www.analyticsvidhya.com/blog/2021/12/traffic-signs-recognition-using-cnn-and-keras-in-python/)
 
+A projekt az útjelző táblák felismeréséhez és azonosításához képfeldolgozási technikákat és gépi tanulást használ. A TensorFlow és más releváns technológiák, mint a pytesseract (OCR), OpenCV (képfeldolgozás), és scikit-image (képelemzés) alkalmazásával egy olyan rendszert hozunk létre, ami képes az útjelző táblák széles skálájának felismerésére. A GUI-n keresztül történő interakció lehetővé teszi a felhasználók számára, hogy egyszerűen feltölthessék a táblák képeit, melyeket a rendszer elemz, és azonnali visszajelzést ad a felismerés eredményéről.
 
-https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign?resource=download
-https://www.analyticsvidhya.com/blog/2021/12/traffic-signs-recognition-using-cnn-and-keras-in-python/
+### Környezet beállítása
 
-set TF_ENABLE_ONEDNN_OPTS=0
+A sikeres projektindításhoz szükség van a megfelelő környezet előkészítésére, amely magában foglalja a TensorFlow, a pytesseract, az OpenCV és egyéb függőségek telepítését. Ezek a könyvtárak biztosítják a szükséges alapokat a képek előfeldolgozásához, a modell építéséhez és tréningeléséhez, valamint az OCR funkciókhoz.
+
+### Tesztelés és optimalizálás
+
+A rendszer tesztelése és optimalizálása kulcsfontosságú lépés a projekt fejlesztési ciklusában. Szükséges a különböző típusú útjelző táblákkal, fényviszonyokkal és szögekkel való tesztelés, hogy növeljük a rendszer adaptivitását és megbízhatóságát. Az adatgyűjtés és -elemzés segít a rendszer finomhangolásában, hogy a lehető legpontosabb és leggyorsabb eredményeket érjük el.
+
+### GUI fejlesztése
+
+A felhasználóbarát interfész megtervezése és implementálása fontos a projekt sikeréhez. A GUI-nak intuitívnak kell lennie, lehetővé téve a felhasználók számára, hogy könnyen navigáljanak, feltölthessék a képeket és gyorsan megkapják a felismerési eredményeket.
+
+Ez a projekt olyan technológiai megoldásokat alkalmaz, amelyek előremozdítják a gépi tanulás és a képfeldolgozás területét, különös tekintettel az útjelző táblák felismerésére. A projekt célja, hogy növelje a közúti biztonságot azzal, hogy digitális eszközökkel támogatja a vezetők tájékozódását és döntéshozatalát.
