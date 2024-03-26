@@ -6,7 +6,7 @@
 
 Ez a projekt egy olyan OCR (Optikai Karakterfelismerő) algoritmus kifejlesztésére irányul, amely képes az útjelző táblák felismerésére és a rajtuk szereplő szöveges információk digitalizálására. Az algoritmus a modern képfeldolgozási technikákat és gépi tanulási modelleket, mint például a TensorFlow-t alkalmazva elemzi a közlekedési jelzéseket, azonosítja a szimbólumokat és a szöveges utasításokat, támogatva ezzel a vezetők tájékozódását és döntéshozatalát.
 
-E projekt különlegessége, hogy a TensorFlow segítségével létrehozott modellt képek alapján tréningeljük, amelyek az útjelző táblákat ábrázolják. A projekt célja egy olyan GUI (grafikus felhasználói interfész) megalkotása, amely képes felismerni és azonosítani a beadott útjelző táblákat a feldolgozott 200 különböző típus közül.
+E projekt különlegessége, hogy a TensorFlow segítségével létrehozott modellt képek alapján tréningeljük, amelyek az útjelző táblákat ábrázolják. A projekt célja egy olyan GUI (grafikus felhasználói interfész) megalkotása, amely képes felismerni és azonosítani a beadott útjelző táblákat a feldolgozott 100 különböző típus közül.
 
 ### Főbb Jellemzők
 
