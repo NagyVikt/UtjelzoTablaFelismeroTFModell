@@ -8,15 +8,15 @@ import numpy as np
 from keras.models import load_model
 model = load_model('traffic_signs_v2.h5')
 #dictionary to label all traffic signs class.
-classes = { 1:'Speed limit (20km/h)',
-           2:'Speed limit (30km/h)',
-           3:'Speed limit (50km/h)',
-           4:'Speed limit (60km/h)',
-           5:'Speed limit (70km/h)',
-           6:'Speed limit (80km/h)',
-           7:'End of speed limit (80km/h)',
-           8:'Speed limit (100km/h)',
-           9:'Speed limit (120km/h)',
+classes = { 1:'Sebességkorlátozás (20km/h)',
+           2:'Sebességkorlátozás (30km/h)',
+           3:'Sebességkorlátozás (50km/h)',
+           4:'Sebességkorlátozás (60km/h)',
+           5:'Sebességkorlátozás (70km/h)',
+           6:'Sebességkorlátozás (80km/h)',
+           7:'Sebességkorlátozás Vége (80km/h)',
+           8:'Sebességkorlátozás (100km/h)',
+           9:'Sebességkorlátozás (120km/h)',
            10:'No passing',
            11:'No passing veh over 3.5 tons',
            12:'Right-of-way at intersection',
@@ -70,7 +70,7 @@ def classify(file_path):
     print(sign)
     label.configure(foreground='#011638', text=sign)
 def show_classify_button(file_path):
-   classify_b=Button(top,text="Classify Image",command=lambda: classify(file_path),padx=10,pady=5)
+   classify_b=Button(top,text="Kép szkennelése",command=lambda: classify(file_path),padx=10,pady=5)
    classify_b.configure(background='#364156', foreground='white',font=('arial',10,'bold'))
    classify_b.place(relx=0.79,rely=0.46)
 def upload_image():
@@ -85,7 +85,7 @@ def upload_image():
         show_classify_button(file_path)
     except:
        pass
-upload=Button(top,text="Upload an image",command=upload_image,padx=10,pady=5)
+upload=Button(top,text="Tölts fel egy képet",command=upload_image,padx=10,pady=5)
 upload.configure(background='#364156', foreground='white',font=('arial',10,'bold'))
 upload.pack(side=BOTTOM,pady=50)
 sign_image.pack(side=BOTTOM,expand=True)
