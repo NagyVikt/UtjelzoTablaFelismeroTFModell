@@ -240,26 +240,32 @@ def main(image_path):
     # Save the red mask image for debugging purposes
     cv2.imwrite('red_mask.png', mask)
 
-    # Filter contours based on area and shape
-    filtered_contours = filter_contours_based_on_area_and_shape(contours)
 
-    # Preprocess the original image for OCR
-    preprocessed_image = ocr.preprocess_image(image_path)
+    # Check if contours are found
+    if contours is not None:
+        filtered_contours = filter_contours_based_on_area_and_shape(contours)
+        preprocessed_image = ocr.preprocess_image(image_path)
 
-    # Crop and group contours
-    cropped_regions = crop_and_group_contours(filtered_contours, preprocessed_image)
+        if filtered_contours:  # Check if filtering was successful
+            cropped_regions = crop_and_group_contours(filtered_contours, preprocessed_image)
+                    
+            # Perform OCR on each cropped region and concatenate results
+            recognized_text = ''
+            for region in cropped_regions:
+                text = ocr.identify_characters(region)
+                recognized_text += text + ' '
 
-    # Perform OCR on each cropped region and concatenate results
-    recognized_text = ''
-    for region in cropped_regions:
-        text = ocr.identify_characters(region)
-        recognized_text += text + ' '
+            # Post-process the recognized text to correct common OCR mistakes
+            processed_text = post_process_text(recognized_text.strip())
 
-    # Post-process the recognized text to correct common OCR mistakes
-    processed_text = post_process_text(recognized_text.strip())
+            # Print the final recognized text
+            print("Recognized Text:", processed_text)
 
-    # Print the final recognized text
-    print("Recognized Text:", processed_text)
+        else:
+            print("No contours passed the filtering criteria.")
+    else:
+        print("No contours were found in the image.")
+
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
