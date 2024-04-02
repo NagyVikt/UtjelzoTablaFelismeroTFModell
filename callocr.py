@@ -1,4 +1,4 @@
-import cv2, Image
+import cv2
 import numpy as np
 
 import imutils
@@ -49,14 +49,18 @@ def four_point_transform(image, pts):
 
 
 class SimpleOCR:
-    def __init__(self):
-        # Dummy templates for illustration purposes
-        # In practice, you would have a dictionary with character templates
-        # For simplicity, this is just a placeholder
-        self.templates = {
-            # Character: Image template
-        }
-    
+    def __init__(self, templates_dir="karakterek"):
+        self.templates = self.load_templates(templates_dir)
+
+    def load_templates(self, directory):
+        templates = {}
+        for filename in os.listdir(directory):
+            if filename.endswith(".jpg"):
+                path = os.path.join(directory, filename)
+                char = filename.split('.')[0]  # Assuming filename is 'A.jpg' for 'A'
+                templates[char] = cv2.imread(path, 0)
+        return templates
+
     def preprocess_image(self, image_path):
         img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
         blur = cv2.GaussianBlur(img, (5, 5), 0)
@@ -68,10 +72,15 @@ class SimpleOCR:
         return contours
     
     def match_template(self, character_image):
-        # This is a placeholder for template matching logic
-        # You would compare character_image to each template and find the best match
-        # Returning '?' as a placeholder for unmatched characters
-        return '?'
+        best_match = '?'
+        min_val = float('inf')
+        for char, template in self.templates.items():
+            res = cv2.matchTemplate(character_image, template, cv2.TM_SQDIFF_NORMED)
+            if np.min(res) < min_val:
+                min_val = np.min(res)
+                best_match = char
+        return best_match
+
 
     def identify_characters(self, preprocessed_image):
         detected_characters = ''
@@ -93,12 +102,10 @@ class SimpleOCR:
         text = self.identify_characters(preprocessed)
         return text
 
-# # Example usage
-# ocr = SimpleOCR()
-# text_detected = ocr.perform_ocr("path_to_your_image.jpg")
-# print(text_detected)
-
 def main(image_path):
+    # Initialize the OCR class with the path to your character templates
+    ocr = SimpleOCR(templates_dir="karakterek")
+
     # Load the image, resize it, and convert it to grayscale
     image = cv2.imread(image_path)
     image = imutils.resize(image, height=500)
@@ -107,31 +114,31 @@ def main(image_path):
     edged = cv2.Canny(gray, 50, 200)
 
     # Find contours and apply the four-point transform to obtain a top-down view
-    cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts)
     cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
+
     for c in cnts:
         peri = cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, 0.02 * peri, True)
         if len(approx) == 4:
             screenCnt = approx
             break
-    warped = four_point_transform(image, screenCnt.reshape(4, 2))
 
-    # Convert the warped image to grayscale, then threshold it
-    warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
-    T = threshold_local(warped, 11, offset=10, method="gaussian")
+    # Ensure the contours have been found before proceeding
+    if 'screenCnt' in locals():
+        warped = four_point_transform(image, screenCnt.reshape(4, 2))
+    else:
+        print("Document boundary not detected, skipping perspective transform.")
+        warped = gray  # Use the grayscale image if contour detection fails
+
+    # Thresholding the warped image to prepare for OCR
+    T = threshold_adaptive(warped, 11, offset=10, method="gaussian")
     warped = (warped > T).astype("uint8") * 255
 
-    # Save the processed image temporarily (consider processing directly if possible)
-    imwrite('temp_processed.jpg', warped)
-
-    # Initialize OCR and process the image
-    ocr = SimpleOCR()
-    text_detected = ocr.perform_ocr('temp_processed.jpg')
-    print(text_detected)
-
-    # Cleanup temporary files
-    os.remove('temp_processed.jpg')
+    # Perform OCR on the processed image
+    text_detected = ocr.identify_characters(warped)
+    print("Recognized Text:", text_detected)
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
