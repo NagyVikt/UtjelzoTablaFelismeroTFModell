@@ -78,3 +78,5 @@ A rendszer tesztelése és optimalizálása kulcsfontosságú lépés a projekt 
 A felhasználóbarát interfész megtervezése és implementálása fontos a projekt sikeréhez. A GUI-nak intuitívnak kell lennie, lehetővé téve a felhasználók számára, hogy könnyen navigáljanak, feltölthessék a képeket és gyorsan megkapják a felismerési eredményeket.
 
 Ez a projekt olyan technológiai megoldásokat alkalmaz, amelyek előremozdítják a gépi tanulás és a képfeldolgozás területét, különös tekintettel az útjelző táblák felismerésére. A projekt célja, hogy növelje a közúti biztonságot azzal, hogy digitális eszközökkel támogatja a vezetők tájékozódását és döntéshozatalát.
+
+https://github.com/SaurabhThube/ocr-Template-matching-
