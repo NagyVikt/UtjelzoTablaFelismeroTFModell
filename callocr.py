@@ -9,27 +9,98 @@ import argparse
 from autocorrect import spell
 import os
 
+
+# Add a new post_process_text function to correct common OCR errors
+def post_process_text(detected_text):
+    # Implement rules to correct common mistakes, e.g., "5TOP" -> "STOP"
+    # This is just a placeholder for your actual post-processing logic
+    corrections = {
+        "5TOP": "STOP",
+        "51OP": "STOP",
+        # Add more as needed
+    }
+    return corrections.get(detected_text, detected_text)
+
 def find_red_regions(image):
     # Convert to HSV color space
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     
-    # Define range for red color and apply color thresholding
-    lower_red1 = np.array([0, 100, 100])
+    # Define range for red color and apply color thresholding for two different ranges of red
+    lower_red1 = np.array([0, 70, 50])
     upper_red1 = np.array([10, 255, 255])
-    lower_red2 = np.array([160, 100, 100])
-    upper_red2 = np.array([179, 255, 255])
+    lower_red2 = np.array([170, 70, 50])
+    upper_red2 = np.array([180, 255, 255])
     
     mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
     mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
     
+    # Combine masks for both red ranges
     mask = cv2.bitwise_or(mask1, mask2)
     
-    # Find contours on the mask
+    # Apply morphological operations
+    # Close operation (dilation followed by erosion) to close small holes inside the foreground
+    kernel_close = np.ones((5,5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel_close)
+
+    # Open operation (erosion followed by dilation) to remove noise
+    kernel_open = np.ones((3,3), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel_open)
+    
+    # Find contours on the cleaned mask
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
-    # Optionally filter contours by shape...
-    
     return mask, contours
+
+
+
+def  filter_contours_based_on_area_and_shape(contours):
+        # Filter contours based on the area and shape
+    min_area = 100  # Minimum area of the contour to be considered
+    max_area = 1000  # Maximum area of the contour to be considered
+
+    filtered_contours = []
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        if min_area < area < max_area:
+            # Further shape checks can be added here
+            filtered_contours.append(cnt)
+
+def crop_and_group_contours(contours, preprocessed_image, grouping_threshold=10):
+    # Crop regions based on contours
+    cropped_regions = []
+    for cnt in contours:
+        x, y, w, h = cv2.boundingRect(cnt)
+        cropped_region = preprocessed_image[y:y+h, x:x+w]
+        cropped_regions.append((x, y, w, h, cropped_region))
+    
+    # Sort regions by x coordinate
+    cropped_regions.sort(key=lambda b: b[0])
+
+    # Grouping close contours
+    grouped_regions = []
+    group = [cropped_regions[0]]
+    for i in range(1, len(cropped_regions)):
+        prev_x, prev_y, prev_w, prev_h, _ = group[-1]
+        cur_x, cur_y, cur_w, cur_h, cur_img = cropped_regions[i]
+        
+        # Check if current contour is close enough to the previous to be considered in the same group
+        if cur_x - (prev_x + prev_w) < grouping_threshold:
+            group.append(cropped_regions[i])
+        else:
+            # If not close, start a new group
+            grouped_regions.append(group)
+            group = [cropped_regions[i]]
+    # Add the last group
+    if group not in grouped_regions:
+        grouped_regions.append(group)
+
+    # Now we can process the groups to combine them into single images
+    # But for now, we return individual cropped regions
+    # To be replaced with actual logic for combining groups into single images
+    processed_groups = [group[-1][-1] for group in grouped_regions]  # Placeholder for actual group processing
+
+    return processed_groups
+
 
 
 
@@ -87,10 +158,13 @@ class SimpleOCR:
         return templates
 
     def preprocess_image(self, image_path):
+        # Apply adaptive thresholding instead of global thresholding
         img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-        blur = cv2.GaussianBlur(img, (5, 5), 0)
-        _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        img = cv2.medianBlur(img, 5)
+        thresh = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                        cv2.THRESH_BINARY_INV, 11, 2)
         return thresh
+    
     
     def find_contours(self, preprocessed_image):
         contours, _ = cv2.findContours(preprocessed_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -122,15 +196,21 @@ class SimpleOCR:
 
     def identify_characters(self, preprocessed_image):
         detected_characters = ''
+        # Here you need to call self.find_contours(preprocessed_image) to get the contours
         contours = self.find_contours(preprocessed_image)
+        # Now sort the contours
+        contours = sorted(contours, key=lambda ctr: cv2.boundingRect(ctr)[0])
+        
         visualization_image = preprocessed_image.copy()  # For visualization
-
+        
         for cnt in contours:
             # Assuming a very basic method to bound rectangles around contours
             x, y, w, h = cv2.boundingRect(cnt)
-
+            aspect_ratio = w / float(h)
+            if aspect_ratio < 0.2 or aspect_ratio > 1.0 or w < min_width or h < min_height:
+                continue
+            
             cv2.rectangle(visualization_image, (x, y), (x+w, y+h), (255, 0, 0), 2)
-
             # Extract the character image from the preprocessed image
             character_image = preprocessed_image[y:y+h, x:x+w]
             # Match the extracted image against templates
@@ -138,8 +218,7 @@ class SimpleOCR:
             detected_characters += character
         
         cv2.imwrite('6_character_regions.png', visualization_image)
-
-
+    
         return detected_characters
 
     def perform_ocr(self, image_path):
@@ -151,57 +230,36 @@ def main(image_path):
     # Initialize the OCR class with the path to your character templates
     ocr = SimpleOCR(templates_dir="karakterek")
 
-    # Load the image, resize it, and convert it to grayscale
+    # Load the image and resize it
     image = cv2.imread(image_path)
     image = imutils.resize(image, height=500)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray = cv2.GaussianBlur(gray, (5, 5), 0)
-    edged = cv2.Canny(gray, 50, 200)
 
-    cv2.imwrite('1_resized_and_gray.png', gray)
+    # Red region detection
+    mask, contours = find_red_regions(image)
 
-    cv2.imwrite('2_edges.png', edged)
+    # Save the red mask image for debugging purposes
+    cv2.imwrite('red_mask.png', mask)
 
-    # Find contours and apply the four-point transform to obtain a top-down view
-    cnts = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = imutils.grab_contours(cnts)
-    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
+    # Filter contours based on area and shape
+    filtered_contours = filter_contours_based_on_area_and_shape(contours)
 
-    contour_image = image.copy()
-    cv2.drawContours(contour_image, cnts, -1, (0, 255, 0), 3)
-    cv2.imwrite('3_contours.png', contour_image)
+    # Preprocess the original image for OCR
+    preprocessed_image = ocr.preprocess_image(image_path)
 
+    # Crop and group contours
+    cropped_regions = crop_and_group_contours(filtered_contours, preprocessed_image)
 
+    # Perform OCR on each cropped region and concatenate results
+    recognized_text = ''
+    for region in cropped_regions:
+        text = ocr.identify_characters(region)
+        recognized_text += text + ' '
 
+    # Post-process the recognized text to correct common OCR mistakes
+    processed_text = post_process_text(recognized_text.strip())
 
-    for c in cnts:
-        peri = cv2.arcLength(c, True)
-        approx = cv2.approxPolyDP(c, 0.02 * peri, True)
-        if len(approx) == 4:
-            screenCnt = approx
-            break
-
-    # Ensure the contours have been found before proceeding
-    if 'screenCnt' in locals():
-        warped = four_point_transform(image, screenCnt.reshape(4, 2))
-        cv2.imwrite('4_warped.png', warped)
-
-    else:
-        print("Document boundary not detected, skipping perspective transform.")
-        warped = gray  # Use the grayscale image if contour detection fails
-
-    # Thresholding the warped image to prepare for OCR
-    T = threshold_local(warped, 11, offset=10, method="gaussian")
-    warped = (warped > T).astype("uint8") * 255
-
-
-
-    # Perform OCR on the processed image
-    text_detected = ocr.identify_characters(warped)
-
-    cv2.imwrite('5_thresholded.png', warped)
-
-    print("Recognized Text:", text_detected)
+    # Print the final recognized text
+    print("Recognized Text:", processed_text)
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()

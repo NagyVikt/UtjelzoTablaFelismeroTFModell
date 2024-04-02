@@ -1,0 +1,35 @@
+tack trace for op definition:
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\gui.py", line 96, in <module>
+File "C:\Python312\Lib\tkinter\__init__.py", line 1485, in mainloop
+File "C:\Python312\Lib\tkinter\__init__.py", line 1948, in __call__
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\gui.py", line 73, in <lambda>
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\gui.py", line 67, in classify
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\utils\traceback_utils.py", line 117, in error_handler
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\backend\tensorflow\trainer.py", line 515, in predict
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\backend\tensorflow\trainer.py", line 213, in one_step_on_data_distributed
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\backend\tensorflow\trainer.py", line 202, in one_step_on_data
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\backend\tensorflow\trainer.py", line 94, in predict_step
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\utils\traceback_utils.py", line 117, in error_handler
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\layers\layer.py", line 814, in __call__      
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\utils\traceback_utils.py", line 117, in error_handler
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\ops\operation.py", line 48, in __call__      
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\utils\traceback_utils.py", line 156, in error_handler
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\models\sequential.py", line 202, in call     
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\models\functional.py", line 194, in call     
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\ops\function.py", line 151, in _run_through_graph
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\models\functional.py", line 578, in call     
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\utils\traceback_utils.py", line 117, in error_handler
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\layers\layer.py", line 814, in __call__      
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\utils\traceback_utils.py", line 117, in error_handler
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\ops\operation.py", line 48, in __call__      
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\utils\traceback_utils.py", line 156, in error_handler
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\layers\convolutional\base_conv.py", line 224, in call
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\layers\convolutional\base_conv.py", line 214, in convolution_op
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\ops\nn.py", line 909, in conv
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\backend\tensorflow\nn.py", line 278, in conv 
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\backend\tensorflow\nn.py", line 268, in _conv_xla
+File "C:\Users\LAP03-kkiss\Desktop\SZE GEPI LATAS\OCRSZE\venv\Lib\site-packages\keras\src\backend\tensorflow\nn.py", line 255, in _conv
+
+         [[{{node convolution}}]]
+        tf2xla conversion failed while converting __inference__conv_xla_585[]. Run with TF_DUMP_GRAPH_PREFIX=/path/to/dump/dir and --vmodule=xla_compiler=2 to obtain a dump of the compiled functions.
+         [[sequential_1/conv2d_1/StatefulPartitionedCall]] [Op:__inference_one_step_on_data_distributed_641]
