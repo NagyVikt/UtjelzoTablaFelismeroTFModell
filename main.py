@@ -7,8 +7,11 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
 import matplotlib.pyplot as plt
+from settings import images_sum
 
-def load_training_data(image_directory, num_classes=43):
+
+
+def load_training_data(image_directory, num_classes=images_sum):
     data = []
     labels = []
     for i in range(num_classes):
@@ -64,20 +67,20 @@ def main():
     
     # Splitting the dataset
     X_train, X_val, y_train, y_val = train_test_split(data, labels, test_size=0.2, random_state=42)
-    y_train = to_categorical(y_train, 43)
-    y_val = to_categorical(y_val, 43)
+    y_train = to_categorical(y_train, images_sum)
+    y_val = to_categorical(y_val, images_sum)
 
     # Building and training the model
-    model = build_model(X_train.shape[1:], 43)
+    model = build_model(X_train.shape[1:], images_sum)
     history = model.fit(X_train, y_train, batch_size=32, epochs=15, validation_data=(X_val, y_val))
 
     # Save the model
-    model.save("traffic_signs_v4.h5")
+    model.save("traffic_signs_v6.h5")
 
     # Load test data
     csv_path = 'Train.csv'
     X_test, y_test_labels = load_test_data(csv_path)
-    y_test = to_categorical(y_test_labels, 43)
+    y_test = to_categorical(y_test_labels, images_sum)
 
     # Evaluate on test data
     test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)

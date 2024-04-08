@@ -6,7 +6,7 @@ import numpy as np
 
 #load the trained model to classify sign
 from keras.models import load_model
-model = load_model('traffic_signs_v2.h5')
+model = load_model('traffic_signs_v6.h5')
 #dictionary to label all traffic signs class.
 classes = { 1:'Sebességkorlátozás (20km/h)',
            2:'Sebességkorlátozás (30km/h)',
@@ -50,7 +50,8 @@ classes = { 1:'Sebességkorlátozás (20km/h)',
            40: 'Tarts balra',
            41: 'Körforgalom',
            42: 'Előzési tilalom vége',
-           43: '3,5 tonnánál nehezebb járművek előzési tilalmának vége' }
+           43: '3,5 tonnánál nehezebb járművek előzési tilalmának vége',
+           44:'Sebességkorlátozás (90km/h)'  }
 #initialise GUI
 top=tk.Tk()
 top.geometry('800x600')
@@ -61,6 +62,7 @@ sign_image = Label(top)
 def classify(file_path):
     global label_packed
     image = Image.open(file_path)
+    image = image.convert('RGB')  # Convert the image to RGB
     image = image.resize((30,30))
     image = np.expand_dims(image, axis=0)
     image = np.array(image)
@@ -69,6 +71,7 @@ def classify(file_path):
     sign = classes[pred+1]
     print(sign)
     label.configure(foreground='#011638', text=sign)
+
 def show_classify_button(file_path):
    classify_b=Button(top,text="Kép szkennelése",command=lambda: classify(file_path),padx=10,pady=5)
    classify_b.configure(background='#364156', foreground='white',font=('arial',10,'bold'))
