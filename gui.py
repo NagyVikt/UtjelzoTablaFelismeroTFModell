@@ -88,12 +88,21 @@ def upload_image():
         show_classify_button(file_path)
     except:
        pass
+
+# Add this block where you initialize your GUI components, after defining `sign_image`
+placeholder = Image.open('placeholdere.png')  # Load the placeholder image
+placeholder.thumbnail(((top.winfo_width()/2.25), (top.winfo_height()/2.25)))
+placeholder_image = ImageTk.PhotoImage(placeholder)
+sign_image.configure(image=placeholder_image)
+sign_image.image = placeholder_image
+
+
 upload=Button(top,text="Tölts fel egy képet",command=upload_image,padx=10,pady=5)
 upload.configure(background='#364156', foreground='white',font=('arial',10,'bold'))
 upload.pack(side=BOTTOM,pady=50)
 sign_image.pack(side=BOTTOM,expand=True)
 label.pack(side=BOTTOM,expand=True)
-heading = Label(top, text="check traffic sign",pady=20, font=('arial',20,'bold'))
+heading = Label(top, text="Útjelző tábla jelentése",pady=20, font=('arial',20,'bold'))
 heading.configure(background='#CDCDCD',foreground='#364156')
 heading.pack()
 top.mainloop()
