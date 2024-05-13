@@ -98,8 +98,7 @@ with open(output_csv_path, mode='w', newline='') as output_file, open(train_csv_
             print(f"Failed to load image: {image_path}")
             continue
 
-        
-
+    
 
         for idx, (width, height, roi_x1, roi_y1, roi_x2, roi_y2, _) in enumerate(csv_data):
             resized_image = cv2.resize(input_image, (width, height))
