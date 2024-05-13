@@ -1,0 +1,7 @@
+Settings.py
+Ez a fájl tartalmazza a konfigurációs beállításokat, mint például a képek számát, amiből új képeket generálunk, és a generált képek mappájának nevét.
+order.py
+Ez a fájl felelős azért, hogy a megadott mappába helyezett képeket átnevezze image01.png, image02.png, stb. formátumra. A működése hasonló a korábban leírt átnevező kódhoz.
+trainer.py
+A trainer.py feladata az adatok beolvasása és feldolgozása. Ebben az esetben a szkript olvassa be a CSV adatokat, generálja a szükséges képeket, és helyezi őket a megfelelő mappába. Ez a fájl a settings.py-ban megadott beállításokat használja.
+
