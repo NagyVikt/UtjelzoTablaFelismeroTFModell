@@ -6,7 +6,7 @@ import numpy as np
 
 #load the trained model to classify sign
 from keras.models import load_model
-model = load_model('traffic_signs_v6.h5')
+model = load_model('traffic_signs_v8.h5')
 #dictionary to label all traffic signs class.
 classes = { 1:'Sebességkorlátozás (20km/h)',
            2:'Sebességkorlátozás (30km/h)',
@@ -51,7 +51,8 @@ classes = { 1:'Sebességkorlátozás (20km/h)',
            41: 'Körforgalom',
            42: 'Előzési tilalom vége',
            43: '3,5 tonnánál nehezebb járművek előzési tilalmának vége',
-           44:'Sebességkorlátozás (90km/h)'  }
+           44:'Sebességkorlátozás (90km/h)',
+           45:'Gyalogos átkelőhely - Járda' }
 #initialise GUI
 top=tk.Tk()
 top.geometry('800x600')
