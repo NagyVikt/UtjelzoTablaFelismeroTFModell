@@ -1,4 +1,4 @@
-class_id = '43'
+class_id = '44'
 num_images = 20
 
 
