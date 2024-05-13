@@ -44,5 +44,16 @@ A GPU használata drámaian csökkentheti a modell tréningeléséhez szüksége
 
 Összességében a TensorFlow és NVIDIA GPU-k kombinációja kiváló választás a mélytanulási modellek gyors és hatékony kiképzéséhez.
 
-Jelenleg 45 kép van a modellben betöltbe ezt nyilvan lehet a jövőben tovabb bővíteni. 
+### ADATGYŰJTÉS ÉS ADATBŐVÍTÉS:
+1. Adatgyűjtés
+Források kiválasztása: Gyűjts képeket különböző forrásokból, mint például online adatbázisokból, nyílt hozzáférésű képgyűjteményekből vagy közösségi médiából. Győződj meg arról, hogy a képek használata jogilag megengedett.
+Változatosság: Ügyelj arra, hogy a képek változatosak legyenek a megvilágítás, szög, háttér és forgalom szempontjából. Ez segít a modell általánosító képességének javításában.
+2. Adatelőkészítés
+Adattisztítás: Vizsgáld meg és tisztítsd meg az adatokat. Eltávolíthatsz duplikált, hibás vagy relevánsnak nem minősülő képeket.
+Címkézés: Minden képet megfelelően címkézz fel. Használhatsz eszközöket a kézi címkézéshez vagy automata címkéző algoritmusokat, amelyeket később manuálisan ellenőrizhetsz.
+3. Adatbővítés
+Augmentáció: Alkalmazhatsz képaugmentációs technikákat, mint például forgatás, méretezés, zaj hozzáadása vagy színskála módosítása. Ez segít növelni a modell robosztusságát anélkül, hogy több valós képet kellene gyűjtened.
+Szintetikus adatok: Generálhatsz szintetikus képeket is, amelyek hasonló jellemzőkkel rendelkeznek, mint a valós képek, ezzel tovább növelve az adathalmaz diverzitását.
+
+Jelenleg 45 kép van a modellben betanítva, ezt nyilvan lehet a jövőben tovabb bővíteni. 
 
