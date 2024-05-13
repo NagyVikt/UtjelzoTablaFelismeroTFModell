@@ -43,3 +43,6 @@ A GPU használata drámaian csökkentheti a modell tréningeléséhez szüksége
 - Nem minden TensorFlow operáció használja hatékonyan a GPU-t, néhány specifikus esetben a CPU teljesítménye lehet jobb.
 
 Összességében a TensorFlow és NVIDIA GPU-k kombinációja kiváló választás a mélytanulási modellek gyors és hatékony kiképzéséhez.
+
+Jelenleg 45 kép van a modellben betöltbe ezt nyilvan lehet a jövőben tovabb bővíteni. 
+
