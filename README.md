@@ -59,7 +59,10 @@ A GUI-n keresztül töltheted fel az útjelző táblák képeit, amelyeket a ren
 - Modell tréningelése és finomhangolása: Használj több különböző adathalmazt a modell robustusságának növelésére.
 - GUI fejlesztése: Implementálj további funkciókat a felhasználói élmény javítása érdekében.
 
-#### A modell betanítása során mért metrikákat jelzik
+#### A modell betanítása során mért idő
+A modell felépítése az adott képek számától függően körülbelül 15 percet vesz igénybe.
+
+#### A modell betanítása során mért metrikákák jelentése
 1. accuracy (Pontosság)
 Jelentés: Az accuracy vagy pontosság azt mutatja meg, hogy a modell mennyire képes helyesen osztályozni az adatokat. %-os pontossággal képes helyesen azonosítani a tanító adatkészletben szereplő címkéket. Ha ez pl.0,43 az azt jelenti, hogy körülbelül 100 kérdésből átlagosan 43-at helyesen tud beazonosítani.
 2. loss (Veszteség)
@@ -68,6 +71,8 @@ Jelentés: A loss vagy veszteség az a szám, ami azt mutatja, mennyire távol v
 Jelentés: A val_accuracy hasonló a fent említett accuracy-hoz, de ez a validációs adatkészletre vonatkozik. Ha ez magasabb, mint a tanító adatkészleten mért pontosság, az azt sugallja, hogy a modell jól teljesít az új, eddig nem látott adatokon. Ebben az esetben ez azt mutatja, hogy a modell általánosítási képessége jó.
 4. val_loss (Validációs Veszteség)
 Jelentés: A val_loss az a veszteség, amit a modell a validációs adatkészleten produkál. Ha ez az érték jelentősen alacsonyabb, mint a tanítási veszteség, az jó jel, mivel azt mutatja, hogy a modell hatékonyan képes generalizálni az új adatokra.
+
+
 
 
 #### Közreműködés
