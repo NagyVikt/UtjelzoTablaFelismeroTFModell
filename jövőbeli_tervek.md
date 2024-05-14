@@ -55,5 +55,7 @@ Címkézés: Minden képet megfelelően címkézz fel. Használhatsz eszközöke
 Augmentáció: Alkalmazhatsz képaugmentációs technikákat, mint például forgatás, méretezés, zaj hozzáadása vagy színskála módosítása. Ez segít növelni a modell robosztusságát anélkül, hogy több valós képet kellene gyűjtened.
 Szintetikus adatok: Generálhatsz szintetikus képeket is, amelyek hasonló jellemzőkkel rendelkeznek, mint a valós képek, ezzel tovább növelve az adathalmaz diverzitását.
 
-Jelenleg 45 kép van a modellben betanítva, ezt nyilvan lehet a jövőben tovabb bővíteni. 
+Jelenleg 45 kép van a modellben betanítva, ezt nyílván lehet a jövőben tovább bővíteni. 
 
+### TÜBB ESET EGYSZERRE
+A modell jelenleg nem tud különbséget tenni ha egyszerre több tábla van a képen feltüntetve ezt a későbbiekben meglehet tanítani vele. 

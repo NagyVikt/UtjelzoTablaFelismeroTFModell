@@ -3,11 +3,16 @@ import pandas as pd
 import os
 from PIL import Image
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical, plot_model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
 import matplotlib.pyplot as plt
-from settings import images_sum
+import pydot
+
+from tensorflow.keras.utils import model_to_dot
+
+
+images_sum = 43  # Példa érték, cseréld le a valós számra
 
 
 
@@ -21,7 +26,7 @@ def load_training_data(image_directory, num_classes=images_sum):
             try:
                 img_path = os.path.join(path, img)
                 image = Image.open(img_path)
-                image = image.resize((30,30))
+                image = image.resize((30, 30))
                 image = np.array(image)
                 data.append(image)
                 labels.append(i)
@@ -37,7 +42,7 @@ def load_test_data(csv_path):
     labels = test_df["ClassId"].values
     for img_path in test_df["Path"].values:
         image = Image.open(img_path)
-        image = image.resize((30,30))
+        image = image.resize((30, 30))
         data.append(np.array(image))
     data = np.array(data)
     return data, labels
@@ -60,6 +65,28 @@ def build_model(input_shape, num_classes):
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
+def plot_training_history(history):
+    plt.figure(figsize=(12, 4))
+    
+    plt.subplot(1, 2, 1)
+    plt.plot(history.history['accuracy'], label='Training Accuracy')
+    plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.title('Training and Validation Accuracy')
+
+    plt.subplot(1, 2, 2)
+    plt.plot(history.history['loss'], label='Training Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.title('Training and Validation Loss')
+
+    plt.tight_layout()
+    plt.show()
+
 def main():
     # Load training data
     image_directory = 'Train'
@@ -78,7 +105,7 @@ def main():
     model.save("traffic_signs_v9.h5")
 
     # Load test data
-    csv_path = 'Train.csv'
+    csv_path = 'Test.csv'  # Update the path if necessary
     X_test, y_test_labels = load_test_data(csv_path)
     y_test = to_categorical(y_test_labels, images_sum)
 
@@ -87,23 +114,11 @@ def main():
     print(f"Test accuracy: {test_acc}, Test loss: {test_loss}")
 
     # Plotting training results
-    plt.figure(0)
-    plt.plot(history.history['accuracy'], label='training accuracy')
-    plt.plot(history.history['val_accuracy'], label='val accuracy')
-    plt.title('Accuracy')
-    plt.xlabel('epochs')
-    plt.ylabel('accuracy')
-    plt.legend()
-    plt.show()
+    plot_training_history(history)
 
-    plt.figure(1)
-    plt.plot(history.history['loss'], label='training loss')
-    plt.plot(history.history['val_loss'], label='val loss')
-    plt.title('Loss')
-    plt.xlabel('epochs')
-    plt.ylabel('loss')
-    plt.legend()
-    plt.show()
+    # Visualize the model architecture
+    plot_model(model, to_file='model_architecture.png', show_shapes=True, show_layer_names=True)
+
 
 
 if __name__ == "__main__":
