@@ -6,7 +6,7 @@ import numpy as np
 
 #load the trained model to classify sign
 from keras.models import load_model
-model = load_model('traffic_signs_v8.h5')
+model = load_model('traffic_signs_v10.h5')
 #dictionary to label all traffic signs class.
 classes = { 1:'Sebességkorlátozás (20km/h)',
            2:'Sebességkorlátozás (30km/h)',
@@ -51,8 +51,28 @@ classes = { 1:'Sebességkorlátozás (20km/h)',
            41: 'Körforgalom',
            42: 'Előzési tilalom vége',
            43: '3,5 tonnánál nehezebb járművek előzési tilalmának vége',
-           44:'Sebességkorlátozás (90km/h)',
-           45:'Gyalogos átkelőhely - Járda' }
+           44: 'Sebességkorlátozás (90km/h)',
+           45: 'Gyalogos átkelőhely - Járda',
+           46: 'Sebességkorlátozás (5km/h)',
+           47: 'Sebességkorlátozás (15km/h)',
+           48: 'Sebességkorlátozás (40km/h)',
+           49: 'Jobbra és előre kanyarodni tilos',
+           50: 'Gyalogosátkelőhely',
+           51: 'Egyenesen haladni tilos',
+           52: 'Jobbra kanyarodni tilos',
+           53: 'Jobbra és balra kanyarodni tilos',
+           54: 'Balra kanyarodni tilos',
+           55: 'Előzni tilos',
+           56: 'Megfordulni tilos',
+           57: 'Gépjárművel behajtani tilos',
+           58: 'Dudálni tilos',
+           59: 'Sebességkorlátozás Vége (40km/h)',
+           60: 'Sebességkorlátozás Vége (50km/h)',
+           61: 'Kötelező haladási irány: balra vagy jobbra',
+           62: 'Autópálya',
+           63: 'Kerékpár pálya',
+           64: 'Megfordulás kötelező',
+           65: 'Veszélyt jelző tábla vagy Általános veszély'}
 #initialise GUI
 top=tk.Tk()
 top.geometry('800x600')
