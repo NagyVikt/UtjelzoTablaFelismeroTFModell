@@ -21,5 +21,5 @@ def rename_images(directory, extension="png"):
         print(f"Renamed '{file}' to '{new_name}'")
 
 # Example usage:
-directory_path = 'Trainer/45'
+directory_path = 'Trainer/49'
 rename_images(directory_path)

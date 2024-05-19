@@ -46,15 +46,15 @@ def validate_image_paths(image_paths):
 # MAXIMUM 22 IMAGES FOR INPUT
 class_id_padded = f"{int(class_id):05d}"
 
-
-
-
 output_csv_path = 'output.csv'
 train_csv_path = 'Train.csv'  # Path to your existing Train.csv file
 
 base_save_dir = f'Train/{class_id}'
 trainer_dir = 'Trainer'
+
+# Generate image paths for both naming conventions
 image_paths = [f'{trainer_dir}/{class_id}/image{i+1}.png' for i in range(num_images)]
+image_paths += [f'{trainer_dir}/{class_id}/image{i:02d}.png' for i in range(1, num_images+1)]
 valid_image_paths = validate_image_paths(image_paths)  # Validate paths before processing
 
 last_set_counter, last_image_counter = find_last_processed_image(output_csv_path, class_id)
@@ -65,12 +65,10 @@ starting_image_index = total_processed_images - num_existing_images
 
 existing_image_paths = get_existing_image_paths(train_csv_path)
 
-
 if not os.path.exists(base_save_dir):
     os.makedirs(base_save_dir)
 
 with open(output_csv_path, mode='w', newline='') as output_file, open(train_csv_path, mode='a', newline='') as train_file:
-
     output_writer = csv.writer(output_file)
     train_writer = csv.writer(train_file)
     output_writer.writerow(['Width', 'Height', 'Roi.X1', 'Roi.Y1', 'Roi.X2', 'Roi.Y2', 'ClassId', 'Path'])
@@ -78,7 +76,6 @@ with open(output_csv_path, mode='w', newline='') as output_file, open(train_csv_
     # Find the last image and set numbers
     set_counter, image_counter = (total_processed_images // 29, total_processed_images % 29) if total_processed_images > 0 else (0, 0)
 
-    
     # If images already exist, start from the next set and image numbers
     if image_counter >= 0:
         image_counter += 1
@@ -98,16 +95,13 @@ with open(output_csv_path, mode='w', newline='') as output_file, open(train_csv_
             print(f"Failed to load image: {image_path}")
             continue
 
-    
-
-        for idx, (width, height, roi_x1, roi_y1, roi_x2, roi_y2, _) in enumerate(csv_data):
+        for width, height, roi_x1, roi_y1, roi_x2, roi_y2, _ in csv_data:
             resized_image = cv2.resize(input_image, (width, height))
             filename = f"{class_id_padded}_{set_counter:05d}_{image_counter:05d}.png"
             relative_path = f"Train/{class_id}/{filename}"
             save_path = os.path.join(base_save_dir, filename)
 
-
-                # Check if the image's path is already in Train.csv
+            # Check if the image's path is already in Train.csv
             if relative_path in existing_image_paths:
                 continue  # Skip this image as its data is already in Train.csv
 

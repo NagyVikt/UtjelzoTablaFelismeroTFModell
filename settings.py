@@ -1,4 +1,4 @@
-class_id = '44' #44 a Trainer/mappa neve ahol elkezdjük a betanítást
+class_id = '47' #44 a Trainer/mappa neve ahol elkezdjük a betanítást
 num_images = 20 #20 darab képig teszteltem a modelt
 
 
