@@ -92,3 +92,4 @@ Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal v
 - [PIL (Pillow) dokumentáció](https://pillow.readthedocs.io/)
 - [Pytesseract GitHub oldala](https://github.com/madmike/ocr-Template-matching)
 - [GTSRB (German Traffic Sign Recognition Benchmark) dataset a Kaggle-on](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
+- [Road Sign Detection](https://www.kaggle.com/datasets/andrewmvd/road-sign-detection)
