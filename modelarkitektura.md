@@ -1,4 +1,22 @@
 Konvolúciós rétegek (Conv2D)
+Magyarázat: 
+A konvolúciós réteg (Conv2D) a konvolúciós neurális hálózatok (CNN) egyik alapvető építőeleme. A konvolúciós rétegek kulcsfontosságúak a képfeldolgozási és mintafelismerési feladatokban, mert lehetővé teszik a modellek számára, hogy hatékonyan kinyerjék a bemeneti adatok (például képek) jellemzőit. Részletesen nézzük meg, mit jelent a konvolúciós réteg és hogyan működik:
+
+Konvolúciós Réteg Feladata és Működése
+Szűrők (Filtek) és Kernels:
+
+A konvolúciós rétegek szűrőket (vagy kernelt) használnak a bemeneti adatok feldolgozására. Ezek a szűrők általában kisebbek, mint a bemeneti kép, például 3x3 vagy 5x5 méretűek. Egy konvolúciós réteg több ilyen szűrőt használ.
+Konvolúciós Művelet:
+
+A konvolúciós művelet során a szűrő végigcsúszik (konvolválódik) a bemeneti képen. Minden pozícióban a szűrő és a kép egy részének elemi szorzatait összegzi, és ez az érték kerül a kimeneti térbe. Ezt az eljárást csúszó ablaknak vagy más néven felcsévélésnek is nevezik.
+Kimeneti Alak (Output Shape):
+
+A kimeneti tér (feature map) mérete a szűrő méretétől, a lépésköztől (stride), és az esetleges padding-től függ. Például, ha a bemeneti kép 28x28 pixel méretű, egy 3x3-as szűrővel és 1-es lépésközzel dolgozunk, akkor a kimeneti tér mérete 26x26 lesz.
+Receptív Mező:
+
+A receptív mező az a bemeneti adat részhalmaza, amely egy adott kimeneti neuront befolyásol. A szűrő méretétől függően a receptív mező lehet nagyobb vagy kisebb
+
+
 conv2d (Conv2D):
 
 Szűrők száma: 32
@@ -20,7 +38,19 @@ Dropout rétegek (Dropout)
 dropout (Dropout):
 Arány: 25%
 Kimeneti alak: (None, 11, 11, 32)
-Funkció: A dropout réteg véletlenszerűen kinullázza a bemenet egyes elemeit az overfitting csökkentése érdekében. A 25%-os dropout azt jelenti, hogy minden bemeneti elem 25%-os valószínűséggel kinullázódik. Ez segít megelőzni, hogy a hálózat túlzottan alkalmazkodjon a tanító adatokhoz, így jobban általánosíthat a teszt adatokon.
+Funkció: A dropout réteg véletlenszerűen kinullázza a bemenet egyes elemeit az overfitting* csökkentése érdekében. A 25%-os dropout azt jelenti, hogy minden bemeneti elem 25%-os valószínűséggel kinullázódik. Ez segít megelőzni, hogy a hálózat túlzottan alkalmazkodjon a tanító adatokhoz, így jobban általánosíthat a teszt adatokon.
+
+*Az overfitting (túltanulás) egy gyakori probléma a gépi tanulásban és a mélytanulási modellekben, amikor egy modell túl jól illeszkedik a tanító adatokhoz, de nem tud jól általánosítani a még nem látott, új adatokon. Az overfitting során a modell megtanul minden apró részletet és zajt a tanító adatokban, ami azt eredményezi, hogy túlzottan specifikus lesz ezekre az adatokra. Emiatt, amikor új adatokat kap, nem tudja jól teljesíteni a feladatát.
+
+Az overfitting jelei a következők lehetnek:
+
+Nagyon alacsony hiba a tanító adatokon, de magas hiba a teszt adatokon:
+
+Ha a modell teljesítménye sokkal jobb a tanító adatokon, mint a teszt adatokon, az overfittingre utalhat.
+Komplex modell:
+
+A túl komplex modellek (például nagyon sok réteggel és neuronnal rendelkező hálózatok) hajlamosak az overfittingre, mert túl sok paraméterük van, ami lehetővé teszi számukra, hogy túlzottan pontosan illeszkedjenek a tanító adatokra.
+
 További konvolúciós rétegek
 conv2d_2 (Conv2D):
 
