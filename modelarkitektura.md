@@ -80,6 +80,26 @@ flatten (Flatten):
 Kimeneti alak: (None, 576)
 Funkció: A flatten réteg a térbeli jellemzőtérből (3x3x64) egy egydimenziós vektort készít. Ez a vektor tartalmazza az összes kinyert jellemzőt, amelyet a sűrű rétegek használnak fel a végső osztályozáshoz.
 Sűrű rétegek (Dense)
+
+
+A Dense Réteg Feladata és Működése
+Teljes Kötés (Full Connection):
+
+Minden egyes bemeneti neuront minden egyes kimeneti neuronnal összeköt. Ez azt jelenti, hogy a bemenet minden komponense hozzájárul a kimenet minden egyes komponenséhez. Ezt az összekapcsolást súlyokkal (weights) valósítja meg.
+Súlyok (Weights) és Előítéletek (Biases):
+
+A dense réteg minden kapcsolatot egy súllyal mér, és minden egyes kimeneti neuronhoz tartozik egy eltolás (bias). A súlyok és az eltolások a tanítás során tanulnak, hogy optimalizálják a hálózat teljesítményét.
+A kimenet minden egyes neuronja a bemenetek súlyozott összegének és az eltolásnak az eredménye:
+
+Aktivációs Függvények:
+
+A dense rétegek gyakran aktivációs függvényeket használnak a lineáris kombinációk nemlineáris átalakítására. Gyakori aktivációs függvények:
+ReLU (Rectified Linear Unit)
+Sigmoid
+Tanh
+Softmax
+A softmax függvényt gyakran használják az utolsó rétegben osztályozási feladatoknál, mivel valószínűségi értékeket ad az egyes osztályokhoz.
+
 dense (Dense):
 
 Neuronszám: 256
@@ -92,7 +112,6 @@ Arány: 50%
 Kimeneti alak: (None, 256)
 Funkció: Ez a dropout réteg 50%-os arányban kinullázza a bemenet elemeit, tovább csökkentve az overfitting lehetőségét.
 dense_1 (Dense):
-
 Neuronszám: 43
 Aktivációs függvény: Softmax
 Kimeneti alak: (None, 43)
