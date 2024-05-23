@@ -6,12 +6,12 @@ Konvolúciós Réteg Feladata és Működése
 Szűrők (Filtek) és Kernels:
 
 A konvolúciós rétegek szűrőket (vagy kernelt) használnak a bemeneti adatok feldolgozására. Ezek a szűrők általában kisebbek, mint a bemeneti kép, például 3x3 vagy 5x5 méretűek. Egy konvolúciós réteg több ilyen szűrőt használ.
-Konvolúciós Művelet:
 
 A konvolúciós művelet során a szűrő végigcsúszik (konvolválódik) a bemeneti képen. Minden pozícióban a szűrő és a kép egy részének elemi szorzatait összegzi, és ez az érték kerül a kimeneti térbe. Ezt az eljárást csúszó ablaknak vagy más néven felcsévélésnek is nevezik.
 Kimeneti Alak (Output Shape):
 
 A kimeneti tér (feature map) mérete a szűrő méretétől, a lépésköztől (stride), és az esetleges padding-től függ. Például, ha a bemeneti kép 28x28 pixel méretű, egy 3x3-as szűrővel és 1-es lépésközzel dolgozunk, akkor a kimeneti tér mérete 26x26 lesz.
+
 Receptív Mező:
 
 A receptív mező az a bemeneti adat részhalmaza, amely egy adott kimeneti neuront befolyásol. A szűrő méretétől függően a receptív mező lehet nagyobb vagy kisebb
