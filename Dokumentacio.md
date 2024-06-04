@@ -1,0 +1,447 @@
+## Projekt DOKUMENENTÁCIÓ: Útjelző Táblák Felismerése OCR és TensorFlow Technológiával
+
+### Projekt Leírás
+Ez a projekt egy innovatív Optikai Karakterfelismerő (OCR) algoritmus kifejlesztésére irányul, amely képes az útjelző táblák felismerésére és a rajtuk szereplő szöveges információk digitalizálására. A modern képfeldolgozási technikákat és gépi tanulási modelleket, mint például a TensorFlow-t alkalmazva elemzi a közlekedési jelzéseket, azonosítja a szimbólumokat és a szöveges utasításokat, támogatva ezzel a vezetők tájékozódását és döntéshozatalát. A projekt célja egy olyan GUI (grafikus felhasználói interfész) megalkotása, amely képes felismerni és azonosítani a beadott útjelző táblákat a feldolgozott 100 különböző típus közül.
+
+### Főbb Jellemzők
+- **Képfeldolgozás és gépi tanulás alapú szövegfelismerés**: Korszerű OCR algoritmusok alkalmazása az útjelző táblák szövegeinek pontos felismerésére.
+- **TensorFlow segítségével tréningelt modell alkalmazása**: Gépi tanulási modellek használata a jelzések pontos felismerésére és azonosítására.
+- **Interaktív GUI**: Felhasználóbarát felület, amely lehetővé teszi a felhasználók számára, hogy képeket töltsenek fel és azonnali visszajelzést kapjanak az elemzés eredményeiről.
+- **Támogatás többféle útjelző tábla azonosítására**: Széles körű útjelző tábla típusok felismerése és azonosítása.
+- **Pontos és megbízható kimenet**: Megbízható szöveges és vizuális eredmények generálása.
+
+### Előfeltételek
+A projekt futtatásához szükséged lesz a következőkre:
+- Python 3.6 vagy újabb verzió
+- TensorFlow 2.x
+- OpenCV
+- PIL (Pillow)
+- NumPy
+- Pandas
+- Matplotlib (opcionális grafikonokhoz)
+
+### Telepítés
+1. Klónozd a projekt GitHub repóját a helyi gépedre:
+   ```bash
+   git clone https://github.com/NagyVikt/OCRSZE.git
+   ```
+2. Lépj be a projekt könyvtárba:
+   ```bash
+   cd ocr-traffic-sign-recognition
+   ```
+3. Hozz létre egy virtuális környezetet:
+   ```bash
+   python -m venv venv
+   ```
+4. Aktiváld a virtuális környezetet:
+   - Windows:
+     ```bash
+     .\venv\Scripts\activate
+     ```
+   - macOS és Linux:
+     ```bash
+     source venv/bin/activate
+     ```
+5. Telepítsd a függőségeket:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Használat
+A GUI indításához futtasd a fő Python szkriptet a projekt gyökérkönyvtárában:
+```bash
+python main.py
+```
+A GUI-n keresztül töltheted fel az útjelző táblák képeit, amelyeket a rendszer elemez, és azonnali visszajelzést ad a felismerés eredményéről.
+
+### Trénelési Folyamat
+
+#### Adatgyűjtés és Előkészítés
+A trénelési folyamat első lépése a megfelelő mennyiségű kép összegyűjtése és előkészítése. Ebben a projektben minden egyes útjelző táblához 20 képet kell összegyűjteni, amelyek különböző perspektívákból, fényviszonyok mellett és különböző torzításokkal ábrázolják ugyanazt a táblát.
+
+1. **Beállítások Konfigurálása**:
+   A `settings.py` fájlban állítsd be az adott útjelző tábla azonosítóját (`class_id`) és a képek számát (`num_images`):
+   ```python
+   class_id = '64'  # Az adott útjelző tábla azonosítója
+   num_images = 20  # A szükséges képek száma
+   ```
+
+2. **Adat Argumentálás**:
+   Az argumentálás célja, hogy a meglévő képekből további példányokat hozzunk létre különböző transzformációk (eltolás, fényerő, forgatás) alkalmazásával. A `data.py` fájlban a következő paraméterek alapján történik az argumentálás:
+   ```python
+   csv_data = [
+       [28, 25, 5, 5, 23, 20, 20],
+       [30, 27, 5, 5, 25, 22, 20],
+       ...
+       [99, 88, 9, 8, 91, 81, 20]
+   ]
+   ```
+   Ezek a paraméterek meghatározzák az egyes képek átméretezését és transzformációit.
+
+#### Képek Előkészítése és Tárolása
+Az összegyűjtött képeket elő kell készíteni a trénelési folyamat számára. Ehhez a `trainer.py` szkriptet használjuk, amely elvégzi a képek feldolgozását és a megfelelő helyre történő mentését.
+
+1. **Képek Betöltése és Ellenőrzése**:
+   Az alábbi funkciók ellenőrzik, hogy az összes szükséges kép elérhető-e, és előkészítik a képeket a feldolgozásra.
+   ```python
+   def validate_image_paths(image_paths):
+       missing_images = [img for img in image_paths if not os.path.exists(img)]
+       if missing_images:
+           print("The following images are missing and will be skipped:")
+           for missing in missing_images:
+               print(missing)
+       return [img for img in image_paths if os.path.exists(img)]
+   ```
+
+2. **Képek Feldolgozása és Mentése**:
+   A képek feldolgozása és mentése során a szkript átméretezi és elmenti a képeket a megfelelő könyvtárstruktúrában, valamint frissíti a CSV fájlokat a szükséges információkkal.
+   ```python
+   with open(output_csv_path, mode='w', newline='') as output_file, open(train_csv_path, mode='a', newline='') as train_file:
+       output_writer = csv.writer(output_file)
+       train_writer = csv.writer(train_file)
+       output_writer.writerow(['Width', 'Height', 'Roi.X1', 'Roi.Y1', 'Roi.X2', 'Roi.Y2', 'ClassId', 'Path'])
+
+       for idx, image_path in enumerate(valid_image_paths):
+           input_image = cv2.imread(image_path)
+           if input_image is None:
+               print(f"Failed to load image: {image_path}")
+               continue
+
+           for width, height, roi_x1, roi_y1, roi_x2, roi_y2, _ in csv_data:
+               resized_image = cv2.resize(input_image, (width, height))
+               filename = f"{class_id_padded}_{set_counter:05d}_{image_counter:05d}.png"
+               relative_path = f"Train/{class_id}/{filename}"
+               save_path = os.path.join(base_save_dir, filename)
+
+               if not os.path.exists(os.path.dirname(save_path)):
+                   os.makedirs(os.path.dirname(save_path))
+
+               cv2.imwrite(save_path, resized_image)
+               output_writer.writerow([width, height, roi_x1, roi_y1, roi_x2, roi_y2, class_id, relative_path])
+               train_writer.writerow([width, height, roi_x1, roi_y1, roi_x2, roi_y2, class_id, relative_path])
+
+               image_counter += 1
+               if image_counter >= 29:  # Reset counter and increase set number after reaching limit
+                   image_counter = 0
+                   set_counter += 1
+   ```
+
+3. **Trénelés Indítása**:
+   Miután az összes képet előkészítettük és elmentettük, a trénelési folyamatot a `trainer.py` szkript futtatásával indíthatjuk el:
+   ```bash
+   python trainer.py
+   ```
+
+Ez a szkript összegyűjti az összes szükséges képet, előkészíti azokat az argumentálás révén, és elmenti a megfelelő formátumban, így biztosítva, hogy a modell trénelési folyamata a lehető leghatékonyabb legyen.
+
+
+### Fejlesztés
+- **A képek előfeldolgozása**: Ez magában foglalja a méretezést, szürkeárnyalatos konverziót, és zajszűrést.
+- **Modell tréningelése és finomhangolása**: Használj több különböző adathalmazt a modell robustusságának növelésére.
+- **GUI fejlesztése**: Implementálj további funkciókat a felhasználói élmény javítása érdekében.
+
+### Modell Trénelési Folyamat
+
+#### A Modell Trénelési Folyamata
+A trénelési folyamat a `main.py` szkript futtatásával történik, amely a TensorFlow segítségével építi és tréneli a neurális hálózatot. A folyamat a következő fő lépésekből áll:
+
+1. **Adatok Betöltése és Előkészítése**:
+   Az adatok betöltését és előkészítését a `load_training_data` és `load_test_data` függvények végzik.
+
+   ```python
+   def load_training_data(image_directory, num_classes=images_sum):
+       data = []
+       labels = []
+       for i in range(num_classes):
+           path = os.path.join(image_directory, str(i))
+           images = os.listdir(path)
+           for img in images:
+               try:
+                   img_path = os.path.join(path, img)
+                   image = Image.open(img_path)
+                   image = image.resize((30,30))
+                   image = np.array(image)
+                   data.append(image)
+                   labels.append(i)
+               except:
+                   print(f"Error loading image: {img_path}")
+       data = np.array(data)
+       labels = np.array(labels)
+       return data, labels
+   ```
+
+   Ez a függvény beolvassa a képeket a megadott könyvtárból, átméretezi őket, és numpy tömbökbe helyezi az adatokat és címkéket. A `load_test_data` függvény hasonló módon működik, de a tesztadatok beolvasására szolgál.
+
+2. **Adatok Szétválasztása**:
+   Az adatokat tréning és validációs adathalmazokra osztjuk a `train_test_split` függvény segítségével:
+
+   ```python
+   X_train, X_val, y_train, y_val = train_test_split(data, labels, test_size=0.2, random_state=42)
+   y_train = to_categorical(y_train, images_sum)
+   y_val = to_categorical(y_val, images_sum)
+   ```
+
+3. **Modell Felépítése**:
+   A modell felépítéséhez a `build_model` függvényt használjuk, amely egy sor konvolúciós, max pooling és dropout rétegből álló Sequential modellt hoz létre:
+
+   ```python
+   def build_model(input_shape, num_classes):
+       model = Sequential([
+           Conv2D(32, (5, 5), activation='relu', input_shape=input_shape),
+           Conv2D(32, (5, 5), activation='relu'),
+           MaxPool2D(pool_size=(2, 2)),
+           Dropout(0.25),
+           Conv2D(64, (3, 3), activation='relu'),
+           Conv2D(64, (3, 3), activation='relu'),
+           MaxPool2D(pool_size=(2, 2)),
+           Dropout(0.25),
+           Flatten(),
+           Dense(256, activation='relu'),
+           Dropout(0.5),
+           Dense(num_classes, activation='softmax')
+       ])
+       model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+       return model
+   ```
+
+4. **Modell Trénelése**:
+   A modell trénelése a `fit` függvény segítségével történik, ahol megadjuk a tréning és validációs adathalmazokat, valamint a batch méretet és az epochok számát:
+
+   ```python
+   history = model.fit(X_train, y_train, batch_size=32, epochs=15, validation_data=(X_val, y_val))
+   ```
+
+5. **Modell Mentése**:
+   A betanított modell mentése a `model.save` függvény segítségével történik:
+
+   ```python
+   model.save("traffic_signs_v10.h5")
+   ```
+
+6. **Teszt Adatok Betöltése és Kiértékelése**:
+   A teszt adatok betöltésére és kiértékelésére a következő lépésekben kerül sor:
+
+   ```python
+   csv_path = 'Train.csv'
+   X_test, y_test_labels = load_test_data(csv_path)
+   y_test = to_categorical(y_test_labels, images_sum)
+
+   test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)
+   print(f"Test accuracy: {test_acc}, Test loss: {test_loss}")
+   ```
+
+7. **Eredmények Megjelenítése**:
+   A tréning eredményeinek megjelenítése grafikonok segítségével történik, amelyek az accuracy és loss metrikákat ábrázolják az epochok függvényében:
+
+   ```python
+   plt.figure(0)
+   plt.plot(history.history['accuracy'], label='training accuracy')
+   plt.plot(history.history['val_accuracy'], label='val accuracy')
+   plt.title('Accuracy')
+   plt.xlabel('epochs')
+   plt.ylabel('accuracy')
+   plt.legend()
+   plt.show()
+
+   plt.figure(1)
+   plt.plot(history.history['loss'], label='training loss')
+   plt.plot(history.history['val_loss'], label='val loss')
+   plt.title('Loss')
+   plt.xlabel('epochs')
+   plt.ylabel('loss')
+   plt.legend()
+   plt.show()
+   ```
+
+8. **Fő Folyamat**:
+   A fő folyamatot a `main` függvény vezérli, amely meghívja a fentebb definiált funkciókat a teljes trénelési és kiértékelési folyamat elvégzésére:
+
+   ```python
+   def main():
+       # Load training data
+       image_directory = 'Train'
+       data, labels = load_training_data(image_directory)
+       
+       # Splitting the dataset
+       X_train, X_val, y_train, y_val = train_test_split(data, labels, test_size=0.2, random_state=42)
+       y_train = to_categorical(y_train, images_sum)
+       y_val = to_categorical(y_val, images_sum)
+
+       # Building and training the model
+       model = build_model(X_train.shape[1:], images_sum)
+       history = model.fit(X_train, y_train, batch_size=32, epochs=15, validation_data=(X_val, y_val))
+
+       # Save the model
+       model.save("traffic_signs_v10.h5")
+
+       # Load test data
+       csv_path = 'Train.csv'
+       X_test, y_test_labels = load_test_data(csv_path)
+       y_test = to_categorical(y_test_labels, images_sum)
+
+       # Evaluate on test data
+       test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)
+       print(f"Test accuracy: {test_acc}, Test loss: {test_loss}")
+
+       # Plotting training results
+       plt.figure(0)
+       plt.plot(history.history['accuracy'], label='training accuracy')
+       plt.plot(history.history['val_accuracy'], label='val accuracy')
+       plt.title('Accuracy')
+       plt.xlabel('epochs')
+       plt.ylabel('accuracy')
+       plt.legend()
+       plt.show()
+
+       plt.figure(1)
+       plt.plot(history.history['loss'], label='training loss')
+       plt.plot(history.history['val_loss'], label='val loss')
+       plt.title('Loss')
+       plt.xlabel('epochs')
+       plt.ylabel('loss')
+       plt.legend()
+       plt.show()
+
+   if __name__ == "__main__":
+       main()
+   ```
+
+Ez a szkript végigvezeti a felhasználót a modell felépítésén, trénelésén, tesztelésén és a végső eredmények kiértékelésén, biztosítva, hogy a neurális hálózat megfelelően működik és képes az útjelző táblák pontos felismerésére.
+
+
+### A Modell Betanítása Során Mért Idő
+A modell felépítése az adott képek számától függően körülbelül 15 percet vesz igénybe.
+
+### A Modell Betanítása Során Mért Metrikák Jelentése
+1. **Accuracy (Pontosság)**
+   - **Jelentés**: Az accuracy vagy pontosság azt mutatja meg, hogy a modell mennyire képes helyesen osztályozni az adatokat. %-os pontossággal képes helyesen azonosítani a tanító adatkészletben szereplő címkéket. Ha ez pl. 0,43, az azt jelenti, hogy körülbelül 100 kérdésből átlagosan 43-at helyesen tud beazonosítani.
+2. **Loss (Veszteség)**
+   - **Jelentés**: A loss vagy veszteség az a szám, ami azt mutatja, mennyire távol vannak a modell által előrejelzett értékek a valós címkéktől. A veszteség alacsonyabb értéke azt jelzi, hogy a modell jobban illeszkedik az adatokhoz.
+3. **Val_accuracy (Validációs Pontosság)**
+   - **Jelentés**: A val_accuracy hasonló a fent említett accuracy-hoz, de ez a validációs adatkészletre vonatkozik. Ha ez magasabb, mint a tanító adatkészleten mért pontosság, az azt sugallja, hogy a modell jól teljesít az új, eddig nem látott adatokon. Ebben az esetben ez azt mutatja, hogy a modell általánosítási képessége jó.
+4. **Val_loss (Validációs Veszteség)**
+   - **Jelentés**: A val_loss az a veszteség, amit a modell a validációs adatkészleten produkál. Ha ez az érték jelentősen alacsonyabb, mint a tanítási veszteség, az jó jel, mivel azt mutatja, hogy a modell hatékonyan képes generalizálni az új adatokra.
+
+
+
+
+### Modell Architektúrája
+
+#### Konvolúciós Rétegek (Conv2D)
+##### Magyarázat:
+A konvolúciós réteg (Conv2D) a konvolúciós neurális hálózatok (CNN) egyik alapvető építőeleme. A konvolúciós rétegek kulcsfontosságúak a képfeldolgozási és mintafelismerési feladatokban, mert lehetővé teszik a modellek számára, hogy hatékonyan kinyerjék a bemeneti adatok (például képek) jellemzőit. Részletesen nézzük meg, mit jelent a konvolúciós réteg és hogyan működik:
+
+##### Konvolúciós Réteg Feladata és Működése
+- **Szűrők (Filtek) és Kernels**:
+  - A konvolúciós rétegek szűrőket (vagy kernelt) használnak a bemeneti adatok feldolgozására. Ezek a szűrők általában kisebbek, mint a bemeneti kép, például 3x3 vagy 5x5 méretűek. Egy konvolúciós réteg több ilyen szűrőt használ.
+  - A konvolúciós művelet során a szűrő végigcsúszik (konvolválódik) a bemeneti képen. Minden pozícióban a szűrő és a kép egy részének elemi szorzatait összegzi, és ez az érték kerül a kimeneti térbe. Ezt az eljárást csúszó ablaknak vagy más néven felcsévélésnek is nevezik.
+- **Kimeneti Alak (Output Shape)**:
+  - A kimeneti tér (feature map) mérete a szűrő méretétől, a lépésköztől (stride), és az esetleges padding-től függ. Például, ha a bemeneti kép 28x28 pixel méretű, egy 3x3-as szűrővel és 1-es lépésközzel dolgozunk, akkor a kimeneti tér mérete 26x26 lesz.
+- **Receptív Mező**:
+  - A receptív mező az a bemeneti adat részhalmaza, amely egy adott kimeneti neuront befolyásol. A szűrő méretétől függően a receptív mező lehet nagyobb vagy kisebb.
+
+##### Konkrét Rétegek:
+- **conv2d (Conv2D)**:
+  - **Szűrők száma**: 32
+  - **Szűrő mérete**: 5x5
+  - **Kimeneti alak**: (None, 26, 26, 32)
+  - **Funkció**: A képek különböző jellemzőinek (például élek, textúrák) kinyerése. Az első konvolúciós réteg 32 szűrőt használ, mindegyik 5x5 méretű. Ezek a szűrők a bemeneti képen végigcsúszva detektálnak különböző jellemzőket. Az eredmény egy 26x26 méretű térbeli kimenet, amely 32 csatornát tartalmaz (egy-egy csatorna minden egyes szűrő kimenete).
+- **conv2d_1 (Conv2D)**:
+  - **Szűrők száma**: 32
+  - **Szűrő mérete**: 5x5
+  - **Kimeneti alak**: (None, 22, 22, 32)
+  - **Funkció**: A második konvolúciós réteg tovább finomítja az első réteg által kinyert jellemzőket. A kimeneti alak kisebb, mert a konvolúciós művelet során a szélek mentén történő átfedések miatt a térbeli méret csökken.
+
+#### Max Pooling Rétegek (MaxPooling2D)
+- **max_pooling2d (MaxPooling2D)**:
+  - **Pooling ablak mérete**: 2x2
+  - **Kimeneti alak**: (None, 11, 11, 32)
+  - **Funkció**: A max pooling rétegek csökkentik a térbeli méreteket, miközben megőrzik a legfontosabb jellemzőket. A pooling ablak 2x2 méretű, ami azt jelenti, hogy a bemeneti képből 2x2-es blokkokon belül a maximális értéket veszi figyelembe. Ez a művelet segít csökkenteni a számítási terhelést és a hálózat méretét.
+
+#### Dropout Rétegek (Dropout)
+- **dropout (Dropout)**:
+  - **Arány**: 25%
+  - **Kimeneti alak**: (None, 11, 11, 32)
+  - **Funkció**: A dropout réteg véletlenszerűen kinullázza a bemenet egyes elemeit az overfitting* csökkentése érdekében. A 25%-os dropout azt jelenti, hogy minden bemeneti elem 25%-os valószínűséggel kinullázódik. Ez segít megelőzni, hogy a hálózat túlzottan alkalmazkodjon a tanító adatokhoz, így jobban általánosíthat a teszt adatokon.
+
+#### További Konvolúciós Rétegek
+- **conv2d_2 (Conv2D)**:
+  - **Szűrők száma**: 64
+  - **Szűrő mérete**: 3x3
+  - **Kimeneti alak**: (None, 9, 9, 64)
+  - **Funkció**: A harmadik konvolúciós réteg mélyebb jellemzőket tanul a bemenetből, mivel több szűrőt használ (64) és kisebb méretűek a szűrők (3x3). Ez a réteg finomabb részleteket és összetettebb jellemzőket képes kinyerni.
+- **conv2d_3 (Conv2D)**:
+  - **Szűrők száma**: 64
+  - **Szűrő mérete**: 3x3
+  - **Kimeneti alak**: (None, 7, 7, 64)
+  - **Funkció**: A negyedik konvolúciós réteg tovább mélyíti a jellemzők tanulását. Az újabb konvolúciós műveletek további csökkenést eredményeznek a térbeli méretben, de növelik a jellemzők komplexitását.
+
+#### Max Pooling és Dropout Rétegek
+- **max_pooling2d_1 (MaxPooling2D)**:
+  - **Pooling ablak mérete**: 2x2
+  - **Kimeneti alak**: (None, 3, 3, 64)
+  - **Funkció**: A második max pooling réteg ismét csökkenti a térbeli méretet, ezúttal 3x3-ra, miközben megtartja a legfontosabb jellemzőket.
+- **dropout_1 (Dropout)**:
+  - **Arány**: 25%
+  - **Kimeneti alak**: (None, 3, 3, 64)
+  - **Funkció**: A második dropout réteg tovább csökkenti az overfitting lehetőségét a jellemző térben, véletlenszerűen kinullázva a bemenetek 25%-át.
+
+#### Flatten Réteg
+- **flatten (Flatten)**:
+  - **Kimeneti alak**: (None, 576)
+  - **Funkció**: A flatten réteg a térbeli jellemzőtérből (3x3x64) egy egydimenziós vektort készít. Ez a vektor tartalmazza az összes kinyert jellemzőt, amelyet a sűrű rétegek használnak fel a végső osztályozáshoz.
+
+#### Sűrű Rétegek (Dense)
+##### A Dense Réteg Feladata és Működése
+- **Teljes Kötés (Full Connection)**:
+  - Minden egyes bemeneti neuront minden egyes kimeneti neuronnal összeköt. Ez azt jelenti, hogy a bemenet minden komponense hozzájárul a kimenet minden egyes komponenséhez. Ezt az összekapcsolást súlyokkal (weights) valósítja meg.
+- **Súlyok (Weights) és Előítéletek (Biases)**:
+  - A dense réteg minden kapcsolatot egy súllyal mér, és minden egyes kimeneti neuronhoz tartozik egy eltolás (bias). A súlyok és az eltolások
+
+ a tanítás során tanulnak, hogy optimalizálják a hálózat teljesítményét.
+- **Aktivációs Függvények**:
+  - A dense rétegek gyakran aktivációs függvényeket használnak a lineáris kombinációk nemlineáris átalakítására. Gyakori aktivációs függvények:
+    - ReLU (Rectified Linear Unit)
+    - Sigmoid
+    - Tanh
+    - Softmax
+  - A softmax függvényt gyakran használják az utolsó rétegben osztályozási feladatoknál, mivel valószínűségi értékeket ad az egyes osztályokhoz.
+
+##### Konkrét Rétegek:
+- **dense (Dense)**:
+  - **Neuronszám**: 256
+  - **Aktivációs függvény**: ReLU (Rectified Linear Unit)
+  - **Kimeneti alak**: (None, 256)
+  - **Funkció**: A sűrű réteg teljesen összekapcsolja a bemenetet az egyes neuronokkal. A ReLU aktivációs függvény non-linearitást ad a modellnek, ami segít a komplex jellemzők tanulásában.
+- **dropout_2 (Dropout)**:
+  - **Arány**: 50%
+  - **Kimeneti alak**: (None, 256)
+  - **Funkció**: Ez a dropout réteg 50%-os arányban kinullázza a bemenet elemeit, tovább csökkentve az overfitting lehetőségét.
+- **dense_1 (Dense)**:
+  - **Neuronszám**: 43
+  - **Aktivációs függvény**: Softmax
+  - **Kimeneti alak**: (None, 43)
+  - **Funkció**: A végső sűrű réteg 43 neuront tartalmaz, ami az osztályok számával egyenlő. A softmax aktivációs függvény az egyes osztályok valószínűségét számítja ki, lehetővé téve a bemenet osztályozását.
+
+### Összefoglalás
+Ez a CNN architektúra jól illeszkedik képfeldolgozási feladatokhoz, például képosztályozáshoz. Az egyes rétegek speciális feladatokat látnak el: a konvolúciós rétegek jellemzőket nyernek ki, a max pooling rétegek csökkentik a térbeli méreteket, a dropout rétegek csökkentik az overfitting lehetőségét, a flatten réteg átalakítja a térbeli jellemzőket egy dimenziójú vektorrá, a sűrű rétegek pedig elvégzik az osztályozást. Ez az architektúra biztosítja, hogy a modell képes legyen jól általánosítani új, ismeretlen képeken is.
+
+
+
+### Közreműködés
+Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal vagy hibajelentéssel, vagy küldj be egy pull requestet a változtatásokkal.
+
+### Licenc
+Ez a projekt a MIT licenc alatt áll.
+
+### Szerző
+- Projekt készítője: Nagy Viktor
+
+### Referenciák
+- [TensorFlow hivatalos weboldala](https://www.tensorflow.org/)
+- [OpenCV dokumentáció](https://opencv.org/)
+- [PIL (Pillow) dokumentáció](https://pillow.readthedocs.io/)
+- [Pytesseract GitHub oldala](https://github.com/madmike/ocr-Template-matching)
+- [GTSRB (German Traffic Sign Recognition Benchmark) dataset a Kaggle-on](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
+- [Chinese Traffic Sign Database](https://nlpr.ia.ac.cn/pal/trafficdata/recognition.html)
+- [DFG Resources](https://www.vicos.si/resources/dfg/)

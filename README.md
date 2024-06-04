@@ -78,8 +78,6 @@ Jelentés: A val_loss az a veszteség, amit a modell a validációs adatkészlet
 Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal vagy hibajelentéssel, vagy küldj be egy pull requestet a változtatásokkal.
 
 
-
-
 #### Licenc
 
 
