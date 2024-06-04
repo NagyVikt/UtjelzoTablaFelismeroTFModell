@@ -23,7 +23,7 @@ A projekt futtatásához szükséged lesz a következőkre:
 ### Telepítés
 1. Klónozd a projekt GitHub repóját a helyi gépedre:
    ```bash
-   git clone https://github.com/NagyVikt/OCRSZE.git
+   git clone https://github.com/NagyVikt/UtjelzoTablaFelismeroTFModell.git
    ```
 2. Lépj be a projekt könyvtárba:
    ```bash
@@ -431,8 +431,6 @@ Ez a CNN architektúra jól illeszkedik képfeldolgozási feladatokhoz, példáu
 ### Közreműködés
 Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal vagy hibajelentéssel, vagy küldj be egy pull requestet a változtatásokkal.
 
-### Licenc
-Ez a projekt a MIT licenc alatt áll.
 
 ### Szerző
 - Projekt készítője: Nagy Viktor
@@ -445,3 +443,5 @@ Ez a projekt a MIT licenc alatt áll.
 - [GTSRB (German Traffic Sign Recognition Benchmark) dataset a Kaggle-on](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
 - [Chinese Traffic Sign Database](https://nlpr.ia.ac.cn/pal/trafficdata/recognition.html)
 - [DFG Resources](https://www.vicos.si/resources/dfg/)
+
+

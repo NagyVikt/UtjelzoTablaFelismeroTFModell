@@ -23,7 +23,7 @@ A projekt futtatásához szükséged lesz a következőkre:
 #### Telepítés
 1. Klónozd a projekt GitHub repóját a helyi gépedre:
    ```bash
-   git clone https://github.com/NagyVikt/OCRSZE.git
+   git clone https://github.com/NagyVikt/UtjelzoTablaFelismeroTFModell.git
    ```
 2. Lépj be a projekt könyvtárba:
    ```bash
@@ -78,9 +78,6 @@ Jelentés: A val_loss az a veszteség, amit a modell a validációs adatkészlet
 Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal vagy hibajelentéssel, vagy küldj be egy pull requestet a változtatásokkal.
 
 
-#### Licenc
-
-
 #### Szerző
 - Projekt készítője: Nagy Viktor
 
@@ -92,3 +89,6 @@ Minden közreműködést szívesen fogadunk! Nyiss egy issue-t a javaslatoddal v
 - [GTSRB (German Traffic Sign Recognition Benchmark) dataset a Kaggle-on](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
 - [Chinese Traffic Sign Database](https://nlpr.ia.ac.cn/pal/trafficdata/recognition.html)
 https://www.vicos.si/resources/dfg/
+
+A részletes projekt leírás a Dokumentacio.md fájlban található.
+
