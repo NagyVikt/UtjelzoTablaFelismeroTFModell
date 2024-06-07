@@ -75,7 +75,7 @@ def main():
     history = model.fit(X_train, y_train, batch_size=32, epochs=15, validation_data=(X_val, y_val))
 
     # Save the model
-    model.save("traffic_signs_v1.h5")
+    model.save("traffic_signs_v11.h5")
 
     # Load test data
     csv_path = 'Train.csv'
